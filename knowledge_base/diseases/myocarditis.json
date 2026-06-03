@@ -1,0 +1,243 @@
+{
+  "condition_id": "myocarditis",
+  "display_name": "Myocarditis",
+  "aliases": [
+    "Myopericarditis"
+  ],
+  "category": "inflammatory_cardiac_condition",
+  "overview": "Myocarditis is inflammation of the heart muscle, called the myocardium. The condition can reduce the heart's ability to pump blood and can cause chest pain, shortness of breath, and rapid or irregular heartbeats. Infection with a virus is one cause of myocarditis. Sometimes myocarditis is caused by a medicine reaction or a condition that causes inflammation throughout the body.\nSevere myocarditis weakens the heart so that the rest of the body does not get enough blood. Clots can form in the heart, leading to a stroke or heart attack. Myocarditis can be benign without serious long-term complications, but in the acute setting it can cause arrhythmias, cardiac failure, cardiogenic shock, and death. It may result in delayed dilated cardiomyopathy.",
+  "ecg_clues": [
+    "sinus tachycardia",
+    "non-specific ST segment and T wave changes",
+    "prolonged QRS",
+    "QT prolongation",
+    "diffuse T wave inversion",
+    "ventricular arrhythmias",
+    "AV conduction defects",
+    "pericarditis ECG features in myopericarditis",
+    "widespread concave ST elevation in myopericarditis"
+  ],
+  "ecg_limitations": [
+    "ECG changes are variable and non-specific in myocarditis"
+  ],
+  "symptoms": {
+    "common": [
+      "chest pain",
+      "fatigue",
+      "swelling of the legs ankles and feet",
+      "rapid or irregular heartbeats",
+      "shortness of breath at rest or during activity",
+      "lightheadedness or feeling like you might faint",
+      "flu-like symptoms such as headache body aches joint pain fever or sore throat"
+    ],
+    "less_common": [
+      "no symptoms",
+      "cough while lying down",
+      "trouble lying flat to sleep",
+      "bloating of the stomach area due to fluid buildup"
+    ],
+    "red_flags": [
+      "unexplained chest pain",
+      "rapid heartbeats",
+      "shortness of breath",
+      "fainting",
+      "trouble breathing",
+      "severe symptoms requiring emergency care"
+    ]
+  },
+  "causes": [
+    "viral infections including adenovirus COVID-19 hepatitis B hepatitis C parvovirus herpes simplex virus echoviruses Epstein-Barr virus rubella HIV",
+    "bacterial infections including staphylococcus streptococcus diphtheria Lyme disease",
+    "parasites including Trypanosoma cruzi and toxoplasma",
+    "fungal infections including candida aspergillus histoplasma",
+    "certain medicines including cancer medicines antibiotics such as penicillin and sulfonamide drugs and some anti-seizure medicines",
+    "illegal drugs such as cocaine",
+    "chemicals such as carbon monoxide",
+    "radiation exposure",
+    "other health conditions such as lupus Wegener's granulomatosis giant cell arteritis and Takayasu's arteritis",
+    "immune mediated conditions including sarcoidosis scleroderma SLE and Kawasaki's disease",
+    "drugs or toxins including clozapine and amphetamines",
+    "bacteria including mycoplasma rickettsia leptospira"
+  ],
+  "risk_factors": [
+    "recent infection",
+    "weakened immune system",
+    "exposure to sick contacts",
+    "risk behaviors for HIV",
+    "illegal drug use"
+  ],
+  "complications": [
+    "heart failure",
+    "blood clots",
+    "heart attack",
+    "stroke",
+    "rapid or irregular heartbeats",
+    "sudden cardiac death",
+    "cardiac arrest",
+    "cardiogenic shock",
+    "delayed dilated cardiomyopathy"
+  ],
+  "diagnosis": {
+    "history_questions": [
+      "Have you recently been sick or recovered from another illness?",
+      "Have you recently traveled out of the country?",
+      "What, if anything, makes symptoms better?",
+      "What, if anything, makes your symptoms worse?",
+      "When did your symptoms begin?",
+      "Do your symptoms include chest pain or shortness of breath?"
+    ],
+    "physical_exam": [
+      "listening to the heart with a stethoscope",
+      "exam for signs of heart failure"
+    ],
+    "tests": [
+      "blood tests",
+      "cardiac enzyme test",
+      "antibody blood tests",
+      "electrocardiogram",
+      "chest X-ray",
+      "cardiac MRI",
+      "echocardiogram",
+      "cardiac catheterization",
+      "heart muscle biopsy"
+    ]
+  },
+  "treatment": {
+    "goals": [
+      "treat the cause",
+      "reduce symptoms",
+      "support heart function",
+      "prevent complications"
+    ],
+    "lifestyle": [
+      "rest",
+      "reduce strain on the heart",
+      "avoid competitive sports for at least 3 to 6 months",
+      "ask which physical activity is safe"
+    ],
+    "medications": [
+      "corticosteroids for rare viral myocarditis such as giant cell or eosinophilic myocarditis",
+      "medicines to prevent blood clots",
+      "diuretics",
+      "beta blockers",
+      "ACE inhibitors",
+      "ARBs",
+      "medicines to treat underlying conditions such as lupus"
+    ],
+    "procedures": [
+      "extracorporeal membrane oxygenation",
+      "ventricular assist device",
+      "intra-aortic balloon pump",
+      "heart transplant"
+    ]
+  },
+  "prevention": [
+    "stay away from people who are sick",
+    "wash hands regularly",
+    "avoid risky behaviors such as unsafe sex or illegal drug use",
+    "get recommended vaccines including COVID-19 influenza and rubella"
+  ],
+  "when_to_seek_help": [
+    "unexplained chest pain",
+    "rapid heartbeats",
+    "shortness of breath",
+    "fainting",
+    "trouble breathing",
+    "severe symptoms requiring emergency care"
+  ],
+  "required_clinical_evidence": [
+    "chest_pain",
+    "shortness_of_breath",
+    "palpitations",
+    "syncope",
+    "fatigue",
+    "leg_swelling",
+    "flu_like_symptoms",
+    "recent_infection",
+    "recent_travel",
+    "medication_list",
+    "drug_use",
+    "immunosuppression"
+  ],
+  "followup_questions": {
+    "chest_pain": "Do you have chest pain?",
+    "shortness_of_breath": "Do you have shortness of breath at rest or during activity?",
+    "palpitations": "Do you feel rapid or irregular heartbeats?",
+    "syncope": "Have you fainted or felt like you might faint?",
+    "fatigue": "Do you feel unusually tired?",
+    "leg_swelling": "Do you have swelling in your legs ankles or feet?",
+    "flu_like_symptoms": "Have you had headache body aches joint pain fever or sore throat?",
+    "recent_infection": "Have you recently been sick or recovered from another illness?",
+    "recent_travel": "Have you recently traveled out of the country?",
+    "medication_list": "Which medicines vitamins or supplements do you take?",
+    "drug_use": "Do you use illegal drugs such as cocaine or amphetamines?",
+    "immunosuppression": "Do you have a weakened immune system or conditions that affect immunity?"
+  },
+  "possible_mimics": [
+    "heart attack",
+    "pericarditis"
+  ],
+  "differential_diagnosis": [
+    "heart attack",
+    "pericarditis",
+    "heart failure"
+  ],
+  "confidence_rules": [
+    "sinus tachycardia with non-specific ST-T changes increases suspicion",
+    "pericarditis ECG features with myocarditis symptoms suggest myopericarditis",
+    "diffuse T wave inversion or QT prolongation supports myocarditis but is non-specific"
+  ],
+  "agent_reasoning_hints": [
+    "Myocarditis can mimic heart attack with chest pain and shortness of breath",
+    "Severe myocarditis can cause clots leading to stroke or heart attack",
+    "Myocarditis may lead to delayed dilated cardiomyopathy",
+    "Arrhythmias and conduction defects can occur in acute myocarditis"
+  ],
+  "related_conditions": [
+    "pericarditis",
+    "dilated_cardiomyopathy",
+    "heart_failure",
+    "arrhythmia",
+    "cardiogenic_shock"
+  ],
+  "retrieval_tags": [
+    "myocarditis",
+    "myopericarditis",
+    "myocardial inflammation",
+    "sinus tachycardia",
+    "non-specific ST-T changes",
+    "QT prolongation",
+    "diffuse T wave inversion",
+    "AV block",
+    "ventricular arrhythmia",
+    "pericarditis ECG",
+    "COVID-19",
+    "viral myocarditis",
+    "corticosteroids",
+    "ECMO",
+    "VAD",
+    "IABP"
+  ],
+  "source_notes": [
+    "Myocarditis is inflammation of the myocardium and can reduce the heart's ability to pump blood",
+    "Severe myocarditis can lead to clots causing stroke or heart attack",
+    "Myocarditis can be benign but in acute settings can cause arrhythmias, cardiac failure, cardiogenic shock, and death",
+    "Myocarditis may result in delayed dilated cardiomyopathy",
+    "ECG changes are common but non-specific, with sinus tachycardia and ST-T changes",
+    "Pericarditis features can be seen when adjacent pericardium is inflamed",
+    "Myocarditis can be caused by viruses, bacteria, parasites, fungi, drugs, toxins, radiation, or systemic inflammatory diseases",
+    "Myocarditis in children can present with difficulty breathing, rapid breathing, chest pain, arrhythmias, fainting, and fever",
+    "Vaccines that protect against COVID-19 influenza and rubella can reduce infection-related myocarditis risk",
+    "Rarely, COVID-19 vaccine can cause myocarditis and pericarditis, particularly in males ages 12 to 29"
+  ],
+  "source_provenance": [
+    {
+      "source": "Mayo Clinic",
+      "document": "Myocarditis"
+    },
+    {
+      "source": "LITFL ECG Library",
+      "document": "Myocarditis"
+    }
+  ]
+}

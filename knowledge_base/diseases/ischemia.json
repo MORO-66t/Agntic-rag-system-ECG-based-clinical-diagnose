@@ -1,0 +1,289 @@
+{
+  "condition_id": "myocardial_ischemia",
+  "display_name": "Myocardial Ischemia",
+  "aliases": [
+    "Myocardial Ischaemia",
+    "Cardiac ischemia",
+    "Cardiac ischaemia",
+    "NSTEACS",
+    "NSTEMI",
+    "Unstable angina",
+    "Unstable angina pectoris",
+    "UAP"
+  ],
+  "category": "ischemia",
+  "overview": "Myocardial ischemia occurs when blood flow to the heart is reduced, preventing the heart muscle from receiving enough oxygen. The reduced blood flow is usually the result of a partial or complete blockage of the heart's coronary arteries. Myocardial ischemia reduces the heart muscle's ability to pump blood. A sudden, severe blockage of one of the heart's arteries can lead to a heart attack. Myocardial ischemia might also cause serious abnormal heart rhythms.\n+Non-ST-elevation acute coronary syndrome (NSTEACS) encompasses two main entities: non-ST-elevation myocardial infarction (NSTEMI) and unstable angina pectoris (UAP). The differentiation between these two conditions is usually retrospective, based on the presence or absence of raised cardiac enzymes at 8 to 12 hours after the onset of chest pain. Both produce the same spectrum of ECG changes and symptoms and are managed identically in the Emergency Department.",
+  "ecg_clues": [
+    "ST segment depression",
+    "T wave flattening",
+    "T wave inversion",
+    "dynamic ST segment changes compared with baseline",
+    "dynamic T wave changes compared with baseline",
+    "horizontal ST depression at the J-point",
+    "downsloping ST depression at the J-point",
+    "ST depression greater than or equal to 0.5 mm in 2 contiguous leads",
+    "ST depression greater than or equal to 1 mm",
+    "ST depression greater than or equal to 2 mm in 3 leads",
+    "upsloping ST depression is non-specific",
+    "widespread ST depression in leads I II V4-6",
+    "ST elevation in aVR greater than 1 mm with widespread ST depression",
+    "T wave inversion at least 1 mm deep in 2 contiguous leads with dominant R waves",
+    "hyperacute peaked T waves",
+    "pseudonormalisation of previously inverted T waves",
+    "U-wave inversion",
+    "Wellens syndrome biphasic T waves in V2-4",
+    "Wellens syndrome deeply and symmetrically inverted T waves in V2-4"
+  ],
+  "ecg_limitations": [
+    "numerous conditions may simulate myocardial ischaemia such as left ventricular hypertrophy or digoxin effect",
+    "ST depression localized to a territory may represent reciprocal change from STEMI and requires evaluation for subtle ST elevation",
+    "T wave inversion is only significant when seen in leads with upright QRS complexes; it is a normal variant in leads III aVR and V1",
+    "differentiation between NSTEMI and unstable angina is usually retrospective and based on cardiac enzymes 8 to 12 hours after chest pain"
+  ],
+  "symptoms": {
+    "common": [
+      "chest pressure or pain",
+      "angina pectoris",
+      "fast heartbeat",
+      "shortness of breath when physically active",
+      "fatigue"
+    ],
+    "less_common": [
+      "neck or jaw pain",
+      "shoulder or arm pain",
+      "nausea and vomiting",
+      "sweating",
+      "silent ischemia without symptoms"
+    ],
+    "red_flags": [
+      "severe chest pain",
+      "chest pain that does not go away"
+    ]
+  },
+  "causes": [
+    "coronary artery disease",
+    "atherosclerosis",
+    "blood clot",
+    "coronary artery spasm",
+    "partial or complete blockage of a coronary artery",
+    "plaque rupture with clot formation"
+  ],
+  "risk_factors": [
+    "tobacco use",
+    "long-term exposure to secondhand smoke",
+    "diabetes",
+    "high blood pressure",
+    "high blood cholesterol",
+    "high LDL cholesterol",
+    "high blood triglycerides",
+    "obesity",
+    "waist circumference greater than 35 inches in women or 40 inches in men",
+    "lack of physical activity"
+  ],
+  "complications": [
+    "heart attack",
+    "irregular heart rhythm",
+    "heart failure"
+  ],
+  "diagnosis": {
+    "history_questions": [
+      "What are your symptoms and when did they begin?",
+      "How severe are your symptoms?",
+      "Are your symptoms occasional or continuous?",
+      "Does anything improve or worsen your symptoms?",
+      "Do you have a family history of heart disease high blood pressure or high cholesterol?",
+      "Do you smoke or did you smoke?",
+      "Do you have chest pain?",
+      "Do you have shortness of breath with activity?"
+    ],
+    "physical_exam": [
+      "physical exam"
+    ],
+    "tests": [
+      "electrocardiogram",
+      "stress test",
+      "echocardiogram",
+      "stress echocardiogram",
+      "nuclear stress test",
+      "coronary angiography",
+      "cardiac CT scan",
+      "coronary CT angiogram"
+    ]
+  },
+  "treatment": {
+    "goals": [
+      "improve blood flow to the heart muscle"
+    ],
+    "lifestyle": [
+      "quit smoking",
+      "avoid secondhand smoke",
+      "manage underlying health conditions such as diabetes high blood pressure and high blood cholesterol",
+      "eat a healthy diet",
+      "limit saturated fat",
+      "eat whole grains fruits and vegetables",
+      "exercise with a safe plan",
+      "maintain a healthy weight",
+      "decrease stress"
+    ],
+    "medications": [
+      "aspirin or other blood thinner",
+      "nitrates",
+      "beta blockers",
+      "calcium channel blockers",
+      "cholesterol-lowering medications",
+      "ACE inhibitors",
+      "ranolazine"
+    ],
+    "procedures": [
+      "angioplasty and stenting",
+      "coronary artery bypass surgery",
+      "enhanced external counterpulsation"
+    ]
+  },
+  "prevention": [
+    "quit smoking",
+    "avoid secondhand smoke",
+    "manage diabetes",
+    "manage high blood pressure",
+    "manage high blood cholesterol",
+    "eat a heart-healthy diet",
+    "exercise regularly",
+    "maintain a healthy weight",
+    "decrease stress",
+    "regular medical checkups"
+  ],
+  "when_to_seek_help": [
+    "severe chest pain",
+    "chest pain that does not go away"
+  ],
+  "required_clinical_evidence": [
+    "chest_pain",
+    "chest_pressure",
+    "angina",
+    "neck_or_jaw_pain",
+    "shoulder_or_arm_pain",
+    "shortness_of_breath",
+    "fast_heartbeat",
+    "nausea_or_vomiting",
+    "sweating",
+    "fatigue",
+    "silent_ischemia",
+    "diabetes",
+    "hypertension",
+    "high_cholesterol",
+    "high_triglycerides",
+    "tobacco_use",
+    "family_history_heart_disease",
+    "exercise_level"
+  ],
+  "followup_questions": {
+    "chest_pain": "Do you have chest pain or chest pressure?",
+    "angina": "Do you have chest pressure or pain on the left side of your body?",
+    "neck_or_jaw_pain": "Do you have neck or jaw pain?",
+    "shoulder_or_arm_pain": "Do you have shoulder or arm pain?",
+    "shortness_of_breath": "Do you get short of breath with physical activity?",
+    "fast_heartbeat": "Have you noticed a fast heartbeat?",
+    "nausea_or_vomiting": "Have you had nausea or vomiting?",
+    "sweating": "Have you had sweating with symptoms?",
+    "fatigue": "Do you feel unusually tired?",
+    "silent_ischemia": "Have you had episodes without symptoms but were told you had ischemia?",
+    "diabetes": "Do you have diabetes?",
+    "hypertension": "Have you been diagnosed with high blood pressure?",
+    "high_cholesterol": "Have you been told you have high cholesterol?",
+    "high_triglycerides": "Have you been told you have high triglycerides?",
+    "tobacco_use": "Do you smoke or use tobacco?",
+    "family_history_heart_disease": "Do you have a family history of heart disease high blood pressure or high cholesterol?",
+    "exercise_level": "How often do you exercise or do physical activity?"
+  },
+  "possible_mimics": [
+    "left ventricular hypertrophy",
+    "digoxin effect"
+  ],
+  "differential_diagnosis": [
+    "left ventricular hypertrophy",
+    "digoxin effect",
+    "ST-elevation myocardial infarction"
+  ],
+  "confidence_rules": [
+    "dynamic ST segment and T wave changes strongly increase confidence for myocardial ischaemia",
+    "horizontal or downsloping ST depression greater than or equal to 0.5 mm at the J-point in 2 contiguous leads indicates myocardial ischaemia",
+    "ST depression greater than or equal to 1 mm is more specific",
+    "ST depression greater than or equal to 2 mm in 3 leads increases probability of NSTEMI",
+    "T wave inversion at least 1 mm deep in 2 contiguous leads with dominant R waves increases confidence",
+    "ST elevation in aVR greater than 1 mm with widespread ST depression suggests left main coronary artery occlusion"
+  ],
+  "agent_reasoning_hints": [
+    "NSTEACS includes NSTEMI and unstable angina and they share the same ECG changes and symptoms",
+    "Differentiation between NSTEMI and unstable angina is retrospective based on cardiac enzymes 8 to 12 hours after chest pain",
+    "Subendocardial ischemia produces widespread ST depression, often in leads I II V4-6",
+    "Regional ST depression should prompt scrutiny for subtle reciprocal ST elevation",
+    "T wave inversion is only significant in leads with dominant R waves and is normal in leads III aVR and V1",
+    "Wellens syndrome indicates critical LAD stenosis and a high risk of anterior MI within 2 to 3 weeks",
+    "U-wave inversion can be a specific sign of myocardial ischaemia"
+  ],
+  "related_conditions": [
+    "coronary_artery_disease",
+    "myocardial_infarction",
+    "nsteacs",
+    "nstemi",
+    "unstable_angina",
+    "wellens_syndrome",
+    "left_main_coronary_artery_occlusion",
+    "anterior_stemi",
+    "lateral_stemi",
+    "inferior_stemi",
+    "right_ventricular_infarction",
+    "posterior_infarction"
+  ],
+  "retrieval_tags": [
+    "myocardial ischemia",
+    "myocardial ischaemia",
+    "cardiac ischemia",
+    "cardiac ischaemia",
+    "NSTEACS",
+    "NSTEMI",
+    "unstable angina",
+    "UAP",
+    "ST depression",
+    "T wave inversion",
+    "T wave flattening",
+    "dynamic ST changes",
+    "dynamic T wave changes",
+    "horizontal ST depression",
+    "downsloping ST depression",
+    "upsloping ST depression",
+    "subendocardial ischaemia",
+    "aVR ST elevation",
+    "left main coronary artery occlusion",
+    "Wellens syndrome",
+    "biphasic T waves",
+    "hyperacute T waves",
+    "pseudonormalisation",
+    "U-wave inversion"
+  ],
+  "source_notes": [
+    "NSTEACS includes NSTEMI and unstable angina and differentiation is retrospective based on cardiac enzymes 8 to 12 hours after chest pain",
+    "Dynamic ST segment and T wave changes strongly suggest myocardial ischaemia",
+    "Horizontal or downsloping ST depression of at least 0.5 mm at the J-point in 2 contiguous leads indicates myocardial ischaemia",
+    "ST depression of 1 mm is more specific and conveys worse prognosis",
+    "ST depression of 2 mm in 3 leads is associated with a high probability of NSTEMI and predicts significant mortality at 30 days",
+    "Widespread ST depression with ST elevation in aVR greater than 1 mm suggests left main coronary artery occlusion",
+    "T wave inversion is significant when at least 1 mm deep, present in 2 contiguous leads with dominant R waves, and dynamic",
+    "T wave inversion is normal in leads III aVR and V1",
+    "Wellens syndrome involves inverted or biphasic T waves in V2-4 and is highly specific for critical LAD stenosis",
+    "Wellens syndrome has Type A biphasic T waves and Type B deeply inverted T waves",
+    "U-wave inversion is an infrequently recognized but very specific sign of myocardial ischaemia",
+    "Myocardial ischemia reduces the heart muscle's ability to pump blood and can cause serious abnormal heart rhythms",
+    "Chest pain associated with myocardial ischemia can be triggered by physical exertion emotional stress cold temperatures cocaine use eating a heavy or large meal and sexual intercourse"
+  ],
+  "source_provenance": [
+    {
+      "source": "LITFL ECG Library",
+      "document": "Myocardial Ischaemia"
+    },
+    {
+      "source": "Mayo Clinic",
+      "document": "Myocardial ischemia"
+    }
+  ]
+}

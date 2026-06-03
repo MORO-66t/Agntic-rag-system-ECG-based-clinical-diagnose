@@ -1,0 +1,256 @@
+{
+  "condition_id": "coronary_artery_disease",
+  "display_name": "Coronary Artery Disease",
+  "aliases": [
+    "CAD",
+    "Coronary heart disease"
+  ],
+  "category": "coronary_artery_disease",
+  "overview": "Coronary artery disease is a common type of heart disease that affects the coronary arteries. In CAD, there is reduced blood flow to the heart muscle. A buildup of fats, cholesterol and other substances in and on the artery walls, called atherosclerosis, usually causes coronary artery disease. The buildup, called plaque, makes the arteries narrow. Coronary artery disease often develops over many years. Symptoms are from the lack of blood flow to the heart. A complete blockage of blood flow can cause a heart attack.\nTreatment for coronary artery disease may include medicines and surgery. Eating a nutritious diet, getting regular exercise and not smoking can help prevent coronary artery disease and the conditions that can cause it. Coronary artery disease also may be called coronary heart disease.",
+  "ecg_clues": [],
+  "ecg_limitations": [],
+  "symptoms": {
+    "common": [
+      "chest pain called angina",
+      "shortness of breath",
+      "fatigue"
+    ],
+    "less_common": [
+      "brief or sharp pain in the neck arm or back",
+      "symptoms only during exercise",
+      "symptoms worsening or becoming more frequent"
+    ],
+    "red_flags": [
+      "chest pain with pressure tightness squeezing or aching",
+      "pain or discomfort spreading to shoulder arm back neck jaw teeth or upper belly",
+      "cold sweats",
+      "nausea",
+      "shortness of breath",
+      "lightheadedness or sudden dizziness",
+      "heart attack symptoms without chest pain",
+      "heart attack symptoms that seem unrelated in women elderly or people with diabetes"
+    ]
+  },
+  "causes": [
+    "atherosclerosis",
+    "plaque buildup in coronary artery walls",
+    "plaque rupture causing a blood clot",
+    "diabetes or insulin resistance",
+    "high blood pressure",
+    "lack of exercise",
+    "smoking or tobacco use"
+  ],
+  "risk_factors": [
+    "age",
+    "birth sex",
+    "family history of heart disease",
+    "smoking",
+    "secondhand smoke exposure",
+    "high blood pressure",
+    "high LDL cholesterol",
+    "low HDL cholesterol",
+    "diabetes",
+    "obesity",
+    "chronic kidney disease",
+    "lack of exercise",
+    "stress",
+    "unhealthy diet",
+    "alcohol use",
+    "amount of sleep too little or too much",
+    "metabolic syndrome",
+    "obstructive sleep apnea",
+    "increased high-sensitivity C-reactive protein",
+    "high triglycerides",
+    "high homocysteine",
+    "preeclampsia",
+    "diabetes during pregnancy",
+    "high blood pressure during pregnancy",
+    "rheumatoid arthritis",
+    "lupus"
+  ],
+  "complications": [
+    "chest pain angina",
+    "heart attack",
+    "heart failure",
+    "irregular heart rhythms"
+  ],
+  "diagnosis": {
+    "history_questions": [
+      "What are your symptoms?",
+      "When did you begin having symptoms?",
+      "Have the symptoms gotten worse over time?",
+      "Do you have chest pain or difficulty breathing?",
+      "What does the chest pain feel like?",
+      "Does exercise or activity make symptoms worse?",
+      "Does anyone in your family have a heart condition or high blood pressure?",
+      "Have you been diagnosed with other health conditions?",
+      "What medicines do you take?",
+      "How much do you exercise in a typical week?",
+      "What is your usual daily diet?",
+      "Do you or did you smoke? How much? If you quit, when?",
+      "Do you drink alcohol? How much?"
+    ],
+    "physical_exam": [
+      "physical exam"
+    ],
+    "tests": [
+      "blood tests",
+      "high-sensitivity C-reactive protein test",
+      "electrocardiogram",
+      "echocardiogram",
+      "exercise stress test",
+      "nuclear stress test",
+      "heart CT scan",
+      "CT coronary angiogram",
+      "cardiac catheterization and angiogram"
+    ]
+  },
+  "treatment": {
+    "goals": [
+      "reduce plaque buildup and improve blood flow",
+      "reduce symptoms",
+      "prevent heart attack and complications"
+    ],
+    "lifestyle": [
+      "do not smoke or use tobacco",
+      "eat heart-healthy foods",
+      "limit sugar salt and saturated fats",
+      "eat fruits vegetables and whole grains",
+      "eat one or two servings of fish per week",
+      "get regular exercise",
+      "keep a healthy weight",
+      "control blood pressure",
+      "get cholesterol checked and controlled",
+      "check blood sugar if you have diabetes",
+      "avoid or limit alcohol",
+      "get good sleep",
+      "manage stress",
+      "regular health checkups",
+      "ask about recommended vaccines"
+    ],
+    "medications": [
+      "cholesterol medicines including statins niacin fibrates and bile acid sequestrants",
+      "aspirin",
+      "beta blockers",
+      "calcium channel blockers",
+      "ACE inhibitors",
+      "ARBs",
+      "nitroglycerin",
+      "ranolazine"
+    ],
+    "procedures": [
+      "coronary angioplasty and stent placement",
+      "percutaneous coronary intervention",
+      "coronary artery bypass graft surgery",
+      "cardiac rehabilitation"
+    ]
+  },
+  "prevention": [
+    "do not smoke or use tobacco",
+    "limit or do not drink alcohol",
+    "control blood pressure cholesterol and diabetes",
+    "exercise and stay active",
+    "maintain a healthy weight",
+    "eat a low-fat low-salt diet rich in fruits vegetables and whole grains",
+    "reduce and manage stress",
+    "get 7 to 9 hours of sleep daily"
+  ],
+  "when_to_seek_help": [
+    "suspected heart attack",
+    "chest pain",
+    "shortness of breath",
+    "high risk of coronary artery disease needing evaluation"
+  ],
+  "required_clinical_evidence": [
+    "chest_pain",
+    "angina",
+    "shortness_of_breath",
+    "fatigue",
+    "pain_radiation",
+    "cold_sweats",
+    "nausea",
+    "lightheadedness",
+    "diabetes",
+    "hypertension",
+    "high_cholesterol",
+    "smoking_status",
+    "obesity",
+    "family_history_heart_disease",
+    "exercise_level",
+    "diet",
+    "sleep_duration",
+    "alcohol_use",
+    "stress_level"
+  ],
+  "followup_questions": {
+    "chest_pain": "Do you have chest pain or chest pressure?",
+    "angina": "Do you feel squeezing pressure heaviness tightness or pain in the chest?",
+    "shortness_of_breath": "Do you feel short of breath?",
+    "fatigue": "Do you feel unusually tired?",
+    "pain_radiation": "Does the pain spread to your shoulder arm back neck jaw teeth or upper belly?",
+    "cold_sweats": "Have you had cold sweats with symptoms?",
+    "nausea": "Have you had nausea?",
+    "lightheadedness": "Have you felt lightheaded or suddenly dizzy?",
+    "diabetes": "Do you have diabetes?",
+    "hypertension": "Have you been diagnosed with high blood pressure?",
+    "high_cholesterol": "Have you been told you have high cholesterol?",
+    "smoking_status": "Do you smoke or use tobacco?",
+    "obesity": "Has a clinician told you that you have obesity?",
+    "family_history_heart_disease": "Does anyone in your family have heart disease at an early age?",
+    "exercise_level": "How much do you exercise in a typical week?",
+    "diet": "What is your usual daily diet?",
+    "sleep_duration": "How many hours of sleep do you get each night?",
+    "alcohol_use": "Do you drink alcohol? How much?",
+    "stress_level": "How much stress do you have in your daily life?"
+  },
+  "possible_mimics": [],
+  "differential_diagnosis": [],
+  "confidence_rules": [],
+  "agent_reasoning_hints": [],
+  "related_conditions": [
+    "atherosclerosis",
+    "angina",
+    "myocardial_infarction",
+    "heart_failure",
+    "arrhythmia",
+    "diabetes",
+    "hypertension",
+    "chronic_kidney_disease"
+  ],
+  "retrieval_tags": [
+    "coronary artery disease",
+    "CAD",
+    "coronary heart disease",
+    "atherosclerosis",
+    "plaque",
+    "angina",
+    "chest pain",
+    "shortness of breath",
+    "heart attack",
+    "coronary angioplasty",
+    "stent",
+    "CABG",
+    "bypass surgery",
+    "cardiac catheterization",
+    "cardiac CT",
+    "CT coronary angiogram",
+    "nuclear stress test"
+  ],
+  "source_notes": [
+    "Coronary artery disease is caused by plaque buildup that narrows coronary arteries",
+    "Symptoms may be absent at first and can occur with exertion or strong emotions",
+    "A complete blockage can cause a heart attack",
+    "Risk factors include age, birth sex, family history, smoking, high blood pressure, cholesterol problems, diabetes, obesity, chronic kidney disease, inactivity, stress, unhealthy diet, alcohol use, and sleep duration",
+    "Metabolic syndrome increases CAD risk",
+    "Obstructive sleep apnea can raise CAD risk",
+    "High hs-CRP, high triglycerides, and high homocysteine are possible risk factors",
+    "Preeclampsia and other pregnancy complications can increase later CAD risk",
+    "Autoimmune diseases such as rheumatoid arthritis and lupus increase atherosclerosis risk"
+  ],
+  "source_provenance": [
+    {
+      "source": "Mayo Clinic",
+      "document": "Coronary artery disease"
+    }
+  ]
+}

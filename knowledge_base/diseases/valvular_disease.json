@@ -1,0 +1,294 @@
+{
+"condition_id": "valvular_disease",
+
+"display_name": "Valvular Heart Disease",
+
+"aliases": [
+"Heart Valve Disease",
+"Valve Disease",
+"Valvular Disease",
+"Mitral Valve Disease",
+"Aortic Valve Disease",
+"Tricuspid Valve Disease",
+"Pulmonary Valve Disease"
+],
+
+"category": "structural_heart_disease",
+
+"overview": "Heart valve disease occurs when one or more of the four heart valves do not function properly. The affected valve may become narrowed, fail to close completely, become floppy, or be improperly formed. These abnormalities alter normal blood flow through the heart and can eventually affect circulation throughout the body. Heart valve disease may involve the aortic, mitral, tricuspid, or pulmonary valves and can be congenital or acquired later in life.",
+
+"ecg_clues": [
+"atrial fibrillation",
+"left atrial enlargement",
+"right atrial enlargement",
+"left ventricular hypertrophy",
+"right ventricular hypertrophy",
+"pulmonary hypertension pattern",
+"right ventricular strain pattern",
+"nonspecific st t abnormalities"
+],
+
+"ecg_limitations": [
+"ecg alone cannot diagnose valvular heart disease",
+"ecg cannot determine valve anatomy",
+"ecg cannot determine stenosis severity",
+"ecg cannot determine regurgitation severity",
+"echocardiography is required for confirmation"
+],
+
+"symptoms": {
+"common": [
+"shortness of breath",
+"fatigue",
+"chest pain",
+"irregular heartbeat",
+"palpitations"
+],
+
+
+"less_common": [
+  "dizziness",
+  "ankle swelling",
+  "foot swelling",
+  "exercise intolerance"
+],
+
+"red_flags": [
+  "fainting",
+  "syncope",
+  "heart failure symptoms",
+  "stroke symptoms",
+  "severe shortness of breath"
+]
+
+
+},
+
+"causes": [
+"congenital heart valve disease",
+"age related valve degeneration",
+"rheumatic fever",
+"bloodstream infection",
+"infective endocarditis",
+"other heart disease",
+"heart attack",
+"congenital heart defect"
+],
+
+"risk_factors": [
+"older age",
+"rheumatic fever",
+"blood infections",
+"heart attack",
+"heart disease",
+"high blood pressure",
+"high cholesterol",
+"diabetes",
+"congenital heart defect"
+],
+
+"complications": [
+"blood clots",
+"heart failure",
+"atrial fibrillation",
+"other arrhythmias",
+"stroke",
+"pulmonary hypertension",
+"death"
+],
+
+"diagnosis": {
+"history_questions": [
+"Do you experience shortness of breath during activity or at rest?",
+"Do you become tired more easily than before?",
+"Have you experienced chest pain?",
+"Do you feel irregular or rapid heartbeats?",
+"Have you ever fainted?",
+"Do your symptoms worsen during physical activity?",
+"Have you ever been diagnosed with rheumatic fever?",
+"Have you previously been told you have a heart murmur or valve problem?"
+],
+
+
+"physical_exam": [
+  "cardiac auscultation",
+  "heart murmur assessment",
+  "blood pressure assessment",
+  "heart rate assessment",
+  "signs of heart failure evaluation",
+  "peripheral edema assessment"
+],
+
+"tests": [
+  "echocardiogram",
+  "electrocardiogram",
+  "chest x ray",
+  "cardiac mri",
+  "exercise stress test",
+  "cardiac catheterization"
+]
+
+
+},
+
+"treatment": {
+"goals": [
+"improve blood flow",
+"reduce symptoms",
+"prevent complications",
+"preserve cardiac function",
+"prevent progression"
+],
+
+"lifestyle": [
+  "heart healthy diet",
+  "regular exercise when medically appropriate",
+  "maintain healthy weight",
+  "stop smoking",
+  "control blood pressure",
+  "control cholesterol",
+  "control diabetes",
+  "good sleep habits"
+],
+
+"medications": [
+  "blood thinners when indicated",
+  "symptom directed medical therapy"
+],
+
+"procedures": [
+  "heart valve repair",
+  "heart valve replacement",
+  "annuloplasty",
+  "valvuloplasty",
+  "open heart surgery",
+  "minimally invasive valve surgery",
+  "robot assisted valve surgery",
+  "transcatheter aortic valve replacement",
+  "mechanical valve replacement",
+  "biological valve replacement"
+]
+
+
+},
+
+"prevention": [
+"control cardiovascular risk factors",
+"manage diabetes",
+"manage hypertension",
+"maintain healthy weight",
+"avoid smoking",
+"obtain routine medical care"
+],
+
+"when_to_seek_help": [
+"new shortness of breath",
+"fainting",
+"chest pain",
+"new irregular heartbeat",
+"rapid symptom progression",
+"heart failure symptoms"
+],
+
+"required_clinical_evidence": [
+"shortness_of_breath",
+"fatigue",
+"chest_pain",
+"palpitations",
+"syncope",
+"heart_murmur",
+"history_of_rheumatic_fever",
+"known_valve_disease",
+"echocardiogram_result",
+"heart_failure_history"
+],
+
+"followup_questions": {
+"shortness_of_breath": "Do you experience shortness of breath during activity, rest, or while lying down?",
+"fatigue": "Have you noticed increasing fatigue during daily activities?",
+"chest_pain": "Do you experience chest pain or chest pressure?",
+"palpitations": "Do you feel irregular or rapid heartbeats?",
+"syncope": "Have you fainted or nearly fainted?",
+"heart_murmur": "Have you ever been told you have a heart murmur?",
+"history_of_rheumatic_fever": "Have you ever had rheumatic fever?",
+"known_valve_disease": "Have you previously been diagnosed with a heart valve problem?",
+"echocardiogram_result": "Have you had an echocardiogram and were any valve abnormalities reported?"
+},
+
+"possible_mimics": [
+"heart_failure",
+"cardiomyopathy",
+"coronary_artery_disease",
+"pulmonary_hypertension",
+"myocarditis"
+],
+
+"differential_diagnosis": [
+"heart_failure",
+"cardiomyopathy",
+"ischemic_heart_disease",
+"pulmonary_hypertension",
+"congenital_heart_disease"
+],
+
+"confidence_rules": [
+"documented heart murmur increases suspicion",
+"abnormal echocardiogram strongly increases confidence",
+"history of rheumatic fever increases suspicion",
+"progressive shortness of breath increases suspicion",
+"atrial fibrillation may support advanced valve disease"
+],
+
+"agent_reasoning_hints": [
+"echocardiography is the primary diagnostic modality",
+"ecg findings alone are insufficient for diagnosis",
+"severity depends on valve anatomy and blood flow abnormalities",
+"atrial fibrillation is a common complication",
+"heart failure symptoms may indicate advanced disease",
+"some patients remain asymptomatic for years"
+],
+
+"related_conditions": [
+"atrial_fibrillation",
+"heart_failure",
+"pulmonary_hypertension",
+"stroke",
+"cardiomyopathy"
+],
+
+"retrieval_tags": [
+"heart valve disease",
+"valvular disease",
+"valve disease",
+"mitral valve disease",
+"aortic valve disease",
+"tricuspid valve disease",
+"pulmonary valve disease",
+"stenosis",
+"regurgitation",
+"prolapse",
+"atresia",
+"heart murmur",
+"valve replacement",
+"valve repair"
+],
+
+"source_notes": [
+"heart valve disease may affect any of the four cardiac valves",
+"major valve abnormalities include stenosis, regurgitation, prolapse and atresia",
+"echocardiography is central to diagnosis",
+"surgery may be required even before severe symptoms occur",
+"heart failure and atrial fibrillation are important complications"
+],
+
+"source_provenance": [
+{
+"source": "Mayo Clinic",
+"document": "Heart Valve Disease Symptoms and Causes"
+},
+{
+"source": "Mayo Clinic",
+"document": "Heart Valve Disease Diagnosis and Treatment"
+}
+]
+}

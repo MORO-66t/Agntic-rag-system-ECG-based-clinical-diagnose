@@ -1,0 +1,294 @@
+{
+"condition_id": "bradycardia",
+
+"display_name": "Bradycardia",
+
+"aliases": [
+"Sinus Bradycardia",
+"Slow Heart Rate",
+"Bradyarrhythmia"
+],
+
+"category": "bradyarrhythmia",
+
+"overview": "Bradycardia is a heart rhythm condition in which the heart beats slower than normal. In adults, bradycardia is generally defined as a resting heart rate below 60 beats per minute. Bradycardia may be a normal finding in healthy athletes and during sleep, but it may also indicate underlying cardiac, metabolic, neurological, endocrine, medication-related, or conduction system disorders. Severe bradycardia can reduce blood flow to the brain and other organs, leading to syncope, heart failure, and potentially sudden cardiac arrest.",
+
+"ecg_clues": [
+"sinus rhythm with heart rate below 60 bpm",
+"normal p waves preceding qrs complexes",
+"regular rhythm",
+"heart rate below age-adjusted normal range",
+"prominent u waves may be present",
+"sinus pauses may coexist",
+"bradycardia tachycardia pattern may suggest sinus node dysfunction"
+],
+
+"ecg_limitations": [
+"ecg alone cannot determine symptom severity",
+"ecg alone cannot identify underlying cause",
+"physiologic bradycardia may be normal",
+"single ecg cannot reliably diagnose intermittent bradycardia",
+"ecg alone cannot distinguish all sinus node disorders"
+],
+
+"symptoms": {
+"common": [
+  "fatigue",
+  "weakness",
+  "dizziness",
+  "lightheadedness",
+  "exercise intolerance",
+  "shortness of breath"
+],
+
+"less_common": [
+  "confusion",
+  "memory problems",
+  "poor concentration"
+],
+
+"red_flags": [
+  "syncope",
+  "near syncope",
+  "chest pain",
+  "heart failure symptoms",
+  "severe shortness of breath",
+  "hemodynamic instability"
+]
+},
+
+"causes": [
+"sinus node dysfunction",
+"heart block",
+"aging related conduction disease",
+"myocardial infarction",
+"inferior myocardial infarction",
+"myocarditis",
+"hypothyroidism",
+"hypothermia",
+"sleep apnea",
+"electrolyte abnormalities",
+"hyperkalemia",
+"hypermagnesemia",
+"brainstem injury",
+"cushing reflex",
+"anorexia nervosa",
+"increased vagal tone",
+"athletic conditioning",
+"pain induced vagal stimulation",
+"congenital heart disease",
+"post cardiac surgery changes"
+],
+
+"risk_factors": [
+"advanced age",
+"heart disease",
+"prior myocardial infarction",
+"heart surgery",
+"high blood pressure",
+"smoking",
+"heavy alcohol use",
+"sleep apnea",
+"thyroid disease",
+"electrolyte disturbances"
+],
+
+"complications": [
+"syncope",
+"recurrent falls",
+"heart failure",
+"exercise intolerance",
+"sudden cardiac arrest",
+"sudden cardiac death"
+],
+
+"diagnosis": {
+"history_questions": [
+  "Have you experienced dizziness or lightheadedness?",
+  "Have you fainted recently?",
+  "Do you feel unusually tired?",
+  "Do symptoms worsen during exercise?",
+  "Have you been diagnosed with thyroid disease?",
+  "Do you have sleep apnea?",
+  "Have you had a previous heart attack?",
+  "Are you taking medications that slow heart rate?"
+],
+
+"physical_exam": [
+  "heart rate assessment",
+  "blood pressure measurement",
+  "neurological assessment",
+  "cardiac auscultation",
+  "heart failure evaluation"
+],
+
+"tests": [
+  "electrocardiogram",
+  "holter monitor",
+  "event recorder",
+  "blood tests",
+  "electrolyte testing",
+  "thyroid function tests",
+  "exercise stress test",
+  "tilt table test",
+  "sleep study"
+]
+},
+
+"treatment": {
+"goals": [
+  "restore adequate heart rate",
+  "prevent syncope",
+  "improve cardiac output",
+  "treat underlying cause",
+  "prevent complications"
+],
+
+"lifestyle": [
+  "manage sleep apnea",
+  "monitor symptoms",
+  "maintain follow up care",
+  "avoid medication misuse",
+  "manage cardiovascular risk factors"
+],
+
+"medications": [
+  "adjust causative medications",
+  "treat underlying endocrine disorders",
+  "correct electrolyte abnormalities"
+],
+
+"procedures": [
+  "pacemaker implantation"
+]
+},
+
+"prevention": [
+"control cardiovascular disease",
+"manage blood pressure",
+"avoid tobacco",
+"limit alcohol",
+"treat sleep apnea",
+"obtain regular medical follow up"
+],
+
+"when_to_seek_help": [
+"new dizziness",
+"new fainting episode",
+"persistent fatigue",
+"chest pain",
+"shortness of breath",
+"heart rate persistently below normal"
+],
+
+"required_clinical_evidence": [
+"heart_rate",
+"syncope",
+"fatigue",
+"thyroid_history",
+"sleep_apnea",
+"medication_list",
+"history_of_mi",
+"electrolyte_status"
+],
+
+"followup_questions": {
+"syncope": "Have you fainted or nearly fainted recently?",
+
+"fatigue": "Do you feel unusually tired during normal activities?",
+
+"thyroid_history": "Have you been diagnosed with hypothyroidism?",
+
+"sleep_apnea": "Have you been diagnosed with obstructive sleep apnea?",
+
+"medication_list": "Do you take beta blockers, calcium channel blockers, digoxin, or similar medications?",
+
+"history_of_mi": "Have you ever had a heart attack?",
+
+"electrolyte_status": "Have you recently had abnormal potassium, magnesium, or calcium levels?"
+},
+
+"possible_mimics": [
+"physiologic athlete bradycardia",
+"sinus node dysfunction",
+"sinoatrial block",
+"heart block",
+"artifact"
+],
+
+"differential_diagnosis": [
+"sick sinus syndrome",
+"atrioventricular block",
+"athletic heart syndrome",
+"drug induced bradycardia",
+"hypothyroidism"
+],
+
+"confidence_rules": [
+"heart rate below 60 bpm increases confidence",
+"heart rate below 50 bpm significantly increases confidence",
+"heart rate below 40 bpm strongly increases concern",
+"associated syncope strongly increases severity",
+"associated pauses increase suspicion for sinus node disease",
+"bradycardia tachycardia pattern increases suspicion for sick sinus syndrome"
+],
+
+"agent_reasoning_hints": [
+"not all bradycardia is pathologic",
+"athletes commonly have physiologic bradycardia",
+"sleep related bradycardia is often normal",
+"symptomatic bradycardia is more clinically important than isolated heart rate reduction",
+"medication review is essential",
+"sleep apnea is a common reversible cause",
+"hypothyroidism is a common reversible cause",
+"heart block should always be considered"
+],
+
+"related_conditions": [
+"sick_sinus_syndrome",
+"atrioventricular_block",
+"heart_failure",
+"myocarditis",
+"hypothyroidism",
+"sleep_apnea"
+],
+
+"retrieval_tags": [
+"bradycardia",
+"sinus bradycardia",
+"slow heart rate",
+"syncope",
+"sinus node dysfunction",
+"pacemaker",
+"heart block",
+"sleep apnea",
+"hypothyroidism",
+"athlete heart"
+],
+
+"source_notes": [
+"Bradycardia is generally defined as heart rate below 60 bpm in adults",
+"Bradycardia during sleep may be normal",
+"Athletes commonly exhibit physiologic bradycardia",
+"Inferior myocardial infarction may cause sinus bradycardia",
+"Beta blockers, calcium channel blockers, digoxin, and amiodarone may cause bradycardia",
+"Hypothyroidism is a reversible cause of bradycardia",
+"Sleep apnea is a reversible cause of bradycardia",
+"Symptomatic bradycardia may require pacemaker implantation"
+],
+
+"source_provenance": [
+{
+"source": "Mayo Clinic",
+"document": "Bradycardia Symptoms and Causes"
+},
+{
+"source": "Mayo Clinic",
+"document": "Bradycardia Diagnosis and Treatment"
+},
+{
+"source": "LITFL ECG Library",
+"document": "Sinus Bradycardia"
+}
+]
+}

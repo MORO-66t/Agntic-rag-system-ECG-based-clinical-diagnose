@@ -1,0 +1,195 @@
+{
+  "condition_id": "left_bundle_branch_block",
+  "display_name": "Left Bundle Branch Block",
+  "aliases": [
+    "LBBB",
+    "Left bundle branch block"
+  ],
+  "category": "conduction_disorder",
+  "overview": "Bundle branch block is a condition in which there is a delay or blockage along the pathway that electrical impulses travel to make the heart beat. The delay or blockage can occur on the pathway that sends electrical impulses to the left or the right side of the ventricles. In left bundle branch block, impulses travel first via the right bundle branch to the right ventricle and then to the left ventricle via the septum, reversing septal activation and eliminating lateral Q waves. The overall depolarisation vector from the right to left ventricle produces tall R waves in lateral leads and deep S waves in right precordial leads, and the delay to the left ventricle extends the QRS duration to at least 120 ms.\nBundle branch block sometimes makes it harder for the heart to pump blood to the rest of the body and may not need treatment. When treatment is needed, it involves managing the underlying health condition, such as heart disease, that caused bundle branch block. Most people with bundle branch block do not have symptoms; rarely, fainting or feeling as if you are going to faint can occur.",
+  "ecg_clues": [
+    "qrs duration greater than or equal to 120 ms",
+    "dominant s wave in V1",
+    "broad monophasic r wave in lateral leads I aVL V5-6",
+    "absence of q waves in lateral leads",
+    "prolonged r wave peak time greater than 60 ms in leads V5-6",
+    "left axis deviation",
+    "poor r wave progression in precordial leads",
+    "appropriate discordance between QRS and ST-T segments",
+    "rS complex in V1",
+    "QS complex in V1",
+    "M-shaped or notched r wave in lateral leads",
+    "incomplete LBBB when typical morphology is present with qrs duration less than 120 ms"
+  ],
+  "ecg_limitations": [
+    "bundle branch block can complicate accurate diagnosis of other heart conditions, especially heart attacks",
+    "appropriate discordance is expected; excessive discordance or concordant ST changes are used when assessing infarction in LBBB",
+    "LBBB morphology can resemble right ventricular paced rhythms or left ventricular hypertrophy"
+  ],
+  "symptoms": {
+    "common": [
+      "no symptoms"
+    ],
+    "less_common": [
+      "syncope",
+      "presyncope"
+    ],
+    "red_flags": [
+      "syncope",
+      "presyncope"
+    ]
+  },
+  "causes": [
+    "aortic stenosis",
+    "ischaemic heart disease",
+    "hypertension",
+    "dilated cardiomyopathy",
+    "anterior myocardial infarction",
+    "Lenegre-Lev disease",
+    "hyperkalaemia",
+    "digoxin toxicity",
+    "heart attack",
+    "myocarditis",
+    "cardiomyopathy"
+  ],
+  "risk_factors": [
+    "increasing age",
+    "high blood pressure",
+    "heart disease"
+  ],
+  "complications": [
+    "complete blockage of electrical signaling from atria to ventricles if both bundles are blocked",
+    "slowed heart rate",
+    "fainting",
+    "irregular heart rhythms",
+    "delays in diagnosis of other heart conditions, especially heart attacks"
+  ],
+  "diagnosis": {
+    "history_questions": [
+      "Have you fainted or felt like you were going to faint?",
+      "What, if anything, seems to improve your symptoms?",
+      "What, if anything, seems to worsen your symptoms?",
+      "Has a health care provider ever told you that you have a bundle branch block?"
+    ],
+    "physical_exam": [],
+    "tests": [
+      "electrocardiogram",
+      "echocardiogram"
+    ]
+  },
+  "treatment": {
+    "goals": [
+      "manage the underlying health condition that caused bundle branch block",
+      "support heart pumping function when needed"
+    ],
+    "lifestyle": [],
+    "medications": [
+      "medications to reduce high blood pressure when a heart condition is present",
+      "medications to reduce symptoms of heart failure when a heart condition is present"
+    ],
+    "procedures": [
+      "pacemaker for bundle branch block with a history of fainting",
+      "cardiac resynchronization therapy for bundle branch block with low heart-pumping function"
+    ]
+  },
+  "prevention": [],
+  "when_to_seek_help": [
+    "fainting",
+    "heart disease or known bundle branch block and needing guidance on follow-up visits"
+  ],
+  "required_clinical_evidence": [
+    "syncope",
+    "presyncope",
+    "hypertension",
+    "heart_disease",
+    "myocardial_infarction_history",
+    "myocarditis",
+    "cardiomyopathy",
+    "digoxin_use",
+    "hyperkalemia"
+  ],
+  "followup_questions": {
+    "syncope": "Have you fainted recently?",
+    "presyncope": "Have you felt like you were going to faint?",
+    "hypertension": "Have you been diagnosed with high blood pressure?",
+    "heart_disease": "Have you been told you have heart disease?",
+    "myocardial_infarction_history": "Have you had a heart attack?",
+    "myocarditis": "Have you been diagnosed with myocarditis?",
+    "cardiomyopathy": "Have you been diagnosed with cardiomyopathy?",
+    "digoxin_use": "Do you take digoxin?",
+    "hyperkalemia": "Have you had high potassium levels?"
+  },
+  "possible_mimics": [
+    "right ventricular paced rhythm",
+    "left ventricular hypertrophy"
+  ],
+  "differential_diagnosis": [
+    "right ventricular paced rhythm",
+    "left ventricular hypertrophy"
+  ],
+  "confidence_rules": [
+    "qrs duration greater than or equal to 120 ms increases confidence",
+    "dominant s wave in V1 increases confidence",
+    "broad monophasic or notched r wave in lateral leads increases confidence",
+    "absence of q waves in lateral leads increases confidence",
+    "prolonged r wave peak time greater than 60 ms in V5-6 increases confidence",
+    "appropriate discordance supports LBBB pattern"
+  ],
+  "agent_reasoning_hints": [
+    "new LBBB with chest pain is no longer treated as an automatic STEMI equivalent; evaluate for excessive discordance or concordant ST changes",
+    "right ventricular paced rhythms can mimic LBBB and typically show pacing spikes",
+    "left ventricular hypertrophy can mimic LBBB with QRS widening and lateral ST depression or T-wave inversion",
+    "appropriate discordance is expected in LBBB and should be interpreted in that context"
+  ],
+  "related_conditions": [
+    "aortic_stenosis",
+    "ischaemic_heart_disease",
+    "hypertension",
+    "dilated_cardiomyopathy",
+    "anterior_myocardial_infarction",
+    "myocarditis",
+    "hyperkalaemia",
+    "digoxin_toxicity",
+    "lenegre_lev_disease"
+  ],
+  "retrieval_tags": [
+    "LBBB",
+    "left bundle branch block",
+    "bundle branch block",
+    "qrs >= 120 ms",
+    "dominant S wave V1",
+    "broad R wave V5",
+    "broad R wave V6",
+    "absence of Q waves in lateral leads",
+    "left axis deviation",
+    "poor R wave progression",
+    "appropriate discordance",
+    "M-shaped R wave",
+    "notched R wave",
+    "rS in V1",
+    "QS in V1",
+    "incomplete LBBB"
+  ],
+  "source_notes": [
+    "LBBB diagnostic criteria include QRS duration 120 ms or greater, dominant S wave in V1, broad monophasic R wave in lateral leads, absence of Q waves in lateral leads, and prolonged R wave peak time greater than 60 ms in V5-6",
+    "In LBBB, conduction delay causes impulses to travel first via the right bundle branch to the right ventricle and then to the left ventricle via the septum, reversing septal activation",
+    "The overall depolarisation vector from right to left ventricle produces tall R waves in lateral leads and deep S waves in right precordial leads",
+    "Appropriate discordance refers to ST-T changes that are discordant to the QRS complex in LBBB",
+    "Right ventricular paced rhythms can produce a similar morphology; pacing spikes may be present",
+    "Left ventricular hypertrophy may mimic LBBB with QRS widening and lateral ST depression or T-wave inversion",
+    "Bundle branch block often has no symptoms; fainting or presyncope may occur",
+    "If both right and left bundles are blocked, electrical signaling can be completely blocked, slowing the heart rate and causing fainting or irregular rhythms",
+    "Bundle branch block can complicate accurate diagnosis of other heart conditions, especially heart attacks",
+    "Treatment may be unnecessary; when needed it focuses on the underlying cause, pacemaker for fainting, and cardiac resynchronization therapy for low heart-pumping function"
+  ],
+  "source_provenance": [
+    {
+      "source": "LITFL ECG Library",
+      "document": "Left Bundle Branch Block (LBBB)"
+    },
+    {
+      "source": "Mayo Clinic",
+      "document": "Bundle branch block"
+    }
+  ]
+}
