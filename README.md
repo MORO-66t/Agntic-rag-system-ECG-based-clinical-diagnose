@@ -191,31 +191,140 @@ python pdf_semantic_rag.py --ingest --pdf docs/clinical_kb.pdf --document-name "
 
 ## 7. Kafka streaming (optional)
 
-Requires a running Kafka broker (default `localhost:9092`); `kafka-python` is included in
-`requirements.txt`. Relevant modules: `kafka_mitbih_producer.py`, `kafka_raw_consumer.py`,
-`kafka_producer.py`, `ecg_kafka_service.py`.
+Streams raw ECG through a Kafka broker instead of calling the pipeline directly.
+
+### 7.1 Stack and versions
+
+| Component | Version used / recommended | Notes |
+|---|---|---|
+| `kafka-python` | `>=2.0.2` (declared in `requirements.txt`) | Pure-Python client used by all `kafka_*.py` modules |
+| Apache Kafka (broker) | **3.4.x** (recommended) | Any Kafka 3.x works; kafka-python 2.0.2 is protocol-compatible |
+| Java (JVM) | **11 or 17 (LTS)** | Required to run the Kafka broker scripts (`bin/kafka-*.sh`) |
+| ZooKeeper | Bundled with the Kafka distribution | Only needed in classic (non-KRaft) broker mode |
+| Python | **3.10+** (developed on 3.13) | kafka-python 2.0.2 supports Python 3.6+ |
+
+### 7.2 Install a Kafka broker (one-time)
+
+Download an Apache Kafka 3.4.x distribution and a matching JDK (11/17), or run the Docker image below (no install):
 
 ```bash
-# Start a local broker (example)
+# Native (Linux/macOS) — Apache Kafka 3.4.0 (Scala 2.13)
+wget https://downloads.apache.org/kafka/3.4.0/kafka_2.13-3.4.0.tgz
+tar -xvzf kafka_2.13-3.4.0.tgz
+cd kafka_2.13-3.4.0
+
+# Verify Java (Kafka 3.4 supports Java 11 and 17)
+java -version
+```
+
+Docker alternative (single broker, no install):
+
+```bash
+docker run -d --name ecg-kafka -p 9092:9092 \
+  -e KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://localhost:9092 \
+  -e KAFKA_PROCESS_ROLES=broker,controller \
+  -e KAFKA_NODE_ID=1 \
+  -e KAFKA_CONTROLLER_QUORUM_VOTERS=1@localhost:9093 \
+  -e KAFKA_LISTENERS=PLAINTEXT://:9092,CONTROLLER://:9093 \
+  -e KAFKA_CONTROLLER_LISTENER_NAMES=CONTROLLER \
+  -e KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=1 \
+  apache/kafka:3.7.0
+```
+
+### 7.3 Start ZooKeeper + Kafka broker (classic mode)
+
+**Terminal 1 — ZooKeeper:**
+
+```bash
+cd kafka_2.13-3.4.0
+bin/zookeeper-server-start.sh config/zookeeper.properties
+```
+
+**Terminal 2 — Kafka broker:**
+
+```bash
+cd kafka_2.13-3.4.0
 bin/kafka-server-start.sh config/server.properties
+```
 
-# Raw-signal producer smoke test
+> **KRaft mode** (no ZooKeeper, Kafka 3.x+):
+> ```bash
+> bin/kafka-storage.sh random-uuid                      # prints a UUID
+> bin/kafka-storage.sh format -t <UUID> -c config/kraft/server.properties
+> bin/kafka-server-start.sh config/kraft/server.properties
+> ```
+
+### 7.4 Create the 4 topics
+
+Run once while the broker is up:
+
+```bash
+cd kafka_2.13-3.4.0
+
+bin/kafka-topics.sh --bootstrap-server localhost:9092 --create \
+    --topic ecg.raw.signal            --partitions 1 --replication-factor 1
+bin/kafka-topics.sh --bootstrap-server localhost:9092 --create \
+    --topic ecg.events.temporal       --partitions 1 --replication-factor 1
+bin/kafka-topics.sh --bootstrap-server localhost:9092 --create \
+    --topic ecg.results.clinical      --partitions 1 --replication-factor 1
+bin/kafka-topics.sh --bootstrap-server localhost:9092 --create \
+    --topic ecg.patient.registration  --partitions 1 --replication-factor 1
+
+# Verify all four topics exist
+bin/kafka-topics.sh --bootstrap-server localhost:9092 --list
+```
+
+### 7.5 Run the pipeline over Kafka
+
+**Step 1 — start the processing service (Terminal 3):**
+
+```bash
+python ecg_kafka_service.py
+```
+
+> The service consumes with `auto_offset_reset="latest"` — start it **before** the
+> producer, otherwise the messages produced earlier are skipped.
+
+**Step 2 — stream a MIT-BIH record (Terminal 4):**
+
+```bash
+# Stream raw chunks to ecg.raw.signal (~1 chunk = 1 second @ 360 Hz)
+python -c "from kafka_mitbih_producer import stream_mitbih_to_kafka; stream_mitbih_to_kafka('202', max_chunks=600)"
+```
+
+Or run the full end-to-end test (starts the service in a thread, streams, and verifies the output topics):
+
+```bash
+python test_kafka_full_pipeline.py                     # record 202, 5 beats
+python test_kafka_full_pipeline.py --record 100 --max-beats 20
+python test_kafka_full_pipeline.py --no-service        # if the service is already running
+```
+
+Quick producer smoke test without a broker:
+
+```bash
 python test_mitbih_producer.py
+```
 
-# End-to-end Kafka pipeline test (starts the service, streams a record, verifies events)
-python test_kafka_full_pipeline.py
-python test_kafka_full_pipeline.py --record 202 --max-beats 10
-python test_kafka_full_pipeline.py --no-service   # pretend an instance is already running
+**Step 3 — inspect the output topics (Terminal 5):**
+
+```bash
+bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 \
+    --topic ecg.events.temporal --from-beginning
+bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 \
+    --topic ecg.results.clinical --from-beginning
 ```
 
 Topics (configurable via `KAFKA_*` in `.env`):
 
-| Topic | Stream |
-|---|---|
-| `ecg.raw.signal` | Stream 1 — raw ECG signal chunks |
-| `ecg.events.temporal` | Stream 2 — rhythm / pattern events |
-| `ecg.results.clinical` | Stream 3 — clinical results + agent assessments |
-| `ecg.patient.registration` | Stream 4 — patient metadata |
+| Topic | Stream | Written by | Read by |
+|---|---|---|---|
+| `ecg.raw.signal` | 1 — raw ECG chunks | `kafka_mitbih_producer.py` / `test_kafka_full_pipeline.py` | `ecg_kafka_service.py` |
+| `ecg.events.temporal` | 2 — rhythm/pattern events | `ecg_kafka_service.py` | your app / test verifier |
+| `ecg.results.clinical` | 3 — clinical + agent results | `ecg_kafka_service.py` | your app / test verifier |
+| `ecg.patient.registration` | 4 — patient metadata | `test_kafka_full_pipeline.py` | `ecg_kafka_service.py` |
+
+Relevant modules: `kafka_mitbih_producer.py`, `kafka_raw_consumer.py`, `kafka_producer.py`, `ecg_kafka_service.py`.
 
 ---
 
