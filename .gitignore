@@ -1,0 +1,44 @@
+# Environment variables (contains secrets)
+.env
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# TensorFlow model files
+*.keras
+*.h5
+# Keep the deployed CNN weights model tracked (deliberate exception)
+!ecg_cnn_model.keras
+
+# OS files
+Thumbs.db
+.DS_Store
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Output directories
+outputs/
+dump/
+
+# Internal planning / working docs — NOT for the public repository
+plans/
+reports/
+
+# Dataset directories
+tr0ph1c/
+
+# Runtime / debug output logs
+*.log
+afib_*.txt
+afl_*.txt
+results_*.txt
+nan_crash_output.txt
