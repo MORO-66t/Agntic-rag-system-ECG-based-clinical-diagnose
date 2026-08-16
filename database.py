@@ -1,12 +1,13 @@
-from networkx.generators import spectral_graph_forge
-from networkx.generators import spectral_graph_forge
 import json
 import logging
+from datetime import datetime
 from typing import Dict, Any, List, Optional
 import psycopg2
 from psycopg2.extras import RealDictCursor
 from psycopg2.pool import SimpleConnectionPool
 from contextlib import contextmanager
+
+from config import DB_CONFIG as _DB_CONFIG
 
 logger = logging.getLogger(__name__)
 
@@ -16,32 +17,16 @@ class ECGDatabase:
         Initialize PostgreSQL database connection.
         
         Args:
-            db_config: Dictionary with database connection parameters:
-                - host: Database host (default: 'localhost')
-                - port: Database port (default: 5432)
-                - dbname: Database name (default: 'ecg_agent_data')
-                - user: Database user (default: 'postgres')
-                - password: Database password (default: '')
+            db_config: Dictionary with database connection parameters.
+                Falls back to DB_CONFIG from config.py (loaded from .env).
             pool_min: Minimum number of connections in pool
             pool_max: Maximum number of connections in pool
         """
-        if db_config is None:
-            db_config = {}
-        
-        # self.db_config = {
-        #     'host': db_config.get('host', 'localhost'),
-        #     'port': db_config.get('port', 5432),
-        #     'dbname': db_config.get('dbname', 'ecg_agent_data'),
-        #     'user': db_config.get('user', 'postgres'),
-        #     'password': db_config.get('password', 'AHMK@rk1')
-        # }
-        self.db_config = {
-            'host': 'localhost',
-            'port': 5432,
-            'dbname': 'ecg_agent_data',
-            'user': 'postgres',
-            'password': 'AHMK@rk1'
-        }
+        self.db_config = dict(_DB_CONFIG)
+        if db_config:
+            self.db_config.update(
+                (k, v) for k, v in db_config.items() if v is not None
+            )
         
         # Create connection pool
         self.pool = SimpleConnectionPool(
@@ -87,12 +72,64 @@ class ECGDatabase:
                     rr_interval DOUBLE PRECISION,
                     heart_rate DOUBLE PRECISION,
                     qrs_width DOUBLE PRECISION,
+                    qrs_voltage DOUBLE PRECISION,
+                    q_amplitude DOUBLE PRECISION,
+                    r_amplitude DOUBLE PRECISION,
+                    s_amplitude DOUBLE PRECISION,
+                    q_peak INTEGER,
+                    s_peak INTEGER,
                     qt_interval DOUBLE PRECISION,
                     qtc DOUBLE PRECISION,
+                    qtc_bazett DOUBLE PRECISION,
+                    qtc_fridericia DOUBLE PRECISION,
                     st_deviation DOUBLE PRECISION,
-                    t_wave_peak DOUBLE PRECISION,
+                    st_segment_ms DOUBLE PRECISION,
                     t_wave_min DOUBLE PRECISION,
                     t_wave_inverted BOOLEAN,
+                    t_wave_width_ms DOUBLE PRECISION,
+                    t_wave_amplitude DOUBLE PRECISION,
+                    t_wave_polarity TEXT,
+                    tpeak_tend_interval_ms DOUBLE PRECISION,
+                    p_wave_detected BOOLEAN,
+                    p_wave_width_ms DOUBLE PRECISION,
+                    p_wave_prominence DOUBLE PRECISION,
+                    p_wave_inverted BOOLEAN,
+                    p_wave_amplitude DOUBLE PRECISION,
+                    p_wave_polarity TEXT,
+                    pr_interval_ms DOUBLE PRECISION,
+                    pr_segment_ms DOUBLE PRECISION,
+                    u_wave_detected BOOLEAN,
+                    u_wave_peak INTEGER,
+                    u_wave_amplitude DOUBLE PRECISION,
+                    delta_wave_detected BOOLEAN,
+                    delta_wave_slope DOUBLE PRECISION,
+                    flutter_baseline_power DOUBLE PRECISION,
+                    flutter_organization_index DOUBLE PRECISION,
+                    flutter_baseline_dominant_hz DOUBLE PRECISION,
+                    flutter_baseline_detected BOOLEAN,
+                    qrs_axis_deg DOUBLE PRECISION,
+                    qtc_dispersion_ms DOUBLE PRECISION,
+                    electrical_alternans_detected BOOLEAN,
+                    epsilon_wave_detected BOOLEAN,
+                    spodick_sign_detected BOOLEAN,
+                    rhythm_classification TEXT,
+                    hrv_mean_nn DOUBLE PRECISION,
+                    hrv_sdnn DOUBLE PRECISION,
+                    hrv_rmssd DOUBLE PRECISION,
+                    r_wave_inverted BOOLEAN,
+                    r_peak_idx INTEGER,
+                    qrs_onset INTEGER,
+                    qrs_offset INTEGER,
+                    p_onset INTEGER,
+                    p_peak INTEGER,
+                    p_offset INTEGER,
+                    t_onset INTEGER,
+                    t_peak INTEGER,
+                    t_offset INTEGER,
+                    feature_source TEXT,
+                    t_peak_position INTEGER,
+                    p_peak_position INTEGER,
+                    rt_interval_ms DOUBLE PRECISION,
                     amplitude_mean DOUBLE PRECISION,
                     amplitude_std DOUBLE PRECISION,
                     amplitude_min DOUBLE PRECISION,
@@ -103,6 +140,162 @@ class ECGDatabase:
                     raw_feature_json JSONB
                 )
             ''')
+            
+            # Ensure new columns exist for older tables
+            cursor.execute(
+                "ALTER TABLE beat_features ADD COLUMN IF NOT EXISTS t_peak_position INTEGER"
+            )
+            cursor.execute(
+                "ALTER TABLE beat_features ADD COLUMN IF NOT EXISTS p_peak_position INTEGER"
+            )
+            cursor.execute(
+                "ALTER TABLE beat_features ADD COLUMN IF NOT EXISTS rt_interval_ms DOUBLE PRECISION"
+            )
+            cursor.execute(
+                "ALTER TABLE beat_features ADD COLUMN IF NOT EXISTS pr_interval_ms DOUBLE PRECISION"
+            )
+            cursor.execute(
+                "ALTER TABLE beat_features ADD COLUMN IF NOT EXISTS pr_segment_ms DOUBLE PRECISION"
+            )
+            cursor.execute(
+                "ALTER TABLE beat_features ADD COLUMN IF NOT EXISTS r_wave_inverted BOOLEAN"
+            )
+            cursor.execute(
+                "ALTER TABLE beat_features ADD COLUMN IF NOT EXISTS r_peak_idx INTEGER"
+            )
+            cursor.execute(
+                "ALTER TABLE beat_features ADD COLUMN IF NOT EXISTS qrs_onset INTEGER"
+            )
+            cursor.execute(
+                "ALTER TABLE beat_features ADD COLUMN IF NOT EXISTS qrs_offset INTEGER"
+            )
+            # NeuroKit2 integration columns
+            cursor.execute(
+                "ALTER TABLE beat_features ADD COLUMN IF NOT EXISTS st_segment_ms DOUBLE PRECISION"
+            )
+            cursor.execute(
+                "ALTER TABLE beat_features ADD COLUMN IF NOT EXISTS t_wave_width_ms DOUBLE PRECISION"
+            )
+            cursor.execute(
+                "ALTER TABLE beat_features ADD COLUMN IF NOT EXISTS p_wave_inverted BOOLEAN"
+            )
+            cursor.execute(
+                "ALTER TABLE beat_features ADD COLUMN IF NOT EXISTS p_onset INTEGER"
+            )
+            cursor.execute(
+                "ALTER TABLE beat_features ADD COLUMN IF NOT EXISTS p_peak INTEGER"
+            )
+            cursor.execute(
+                "ALTER TABLE beat_features ADD COLUMN IF NOT EXISTS p_offset INTEGER"
+            )
+            cursor.execute(
+                "ALTER TABLE beat_features ADD COLUMN IF NOT EXISTS t_onset INTEGER"
+            )
+            cursor.execute(
+                "ALTER TABLE beat_features ADD COLUMN IF NOT EXISTS t_peak INTEGER"
+            )
+            cursor.execute(
+                "ALTER TABLE beat_features ADD COLUMN IF NOT EXISTS t_offset INTEGER"
+            )
+            cursor.execute(
+                "ALTER TABLE beat_features ADD COLUMN IF NOT EXISTS feature_source TEXT"
+            )
+            cursor.execute(
+                "ALTER TABLE beat_features ADD COLUMN IF NOT EXISTS qrs_voltage DOUBLE PRECISION"
+            )
+            cursor.execute(
+                "ALTER TABLE beat_features ADD COLUMN IF NOT EXISTS q_amplitude DOUBLE PRECISION"
+            )
+            cursor.execute(
+                "ALTER TABLE beat_features ADD COLUMN IF NOT EXISTS r_amplitude DOUBLE PRECISION"
+            )
+            cursor.execute(
+                "ALTER TABLE beat_features ADD COLUMN IF NOT EXISTS s_amplitude DOUBLE PRECISION"
+            )
+            cursor.execute(
+                "ALTER TABLE beat_features ADD COLUMN IF NOT EXISTS q_peak INTEGER"
+            )
+            cursor.execute(
+                "ALTER TABLE beat_features ADD COLUMN IF NOT EXISTS s_peak INTEGER"
+            )
+            cursor.execute(
+                "ALTER TABLE beat_features ADD COLUMN IF NOT EXISTS qtc_bazett DOUBLE PRECISION"
+            )
+            cursor.execute(
+                "ALTER TABLE beat_features ADD COLUMN IF NOT EXISTS qtc_fridericia DOUBLE PRECISION"
+            )
+            cursor.execute(
+                "ALTER TABLE beat_features ADD COLUMN IF NOT EXISTS t_wave_amplitude DOUBLE PRECISION"
+            )
+            cursor.execute(
+                "ALTER TABLE beat_features ADD COLUMN IF NOT EXISTS t_wave_polarity TEXT"
+            )
+            cursor.execute(
+                "ALTER TABLE beat_features ADD COLUMN IF NOT EXISTS tpeak_tend_interval_ms DOUBLE PRECISION"
+            )
+            cursor.execute(
+                "ALTER TABLE beat_features ADD COLUMN IF NOT EXISTS p_wave_amplitude DOUBLE PRECISION"
+            )
+            cursor.execute(
+                "ALTER TABLE beat_features ADD COLUMN IF NOT EXISTS p_wave_polarity TEXT"
+            )
+            cursor.execute(
+                "ALTER TABLE beat_features ADD COLUMN IF NOT EXISTS u_wave_detected BOOLEAN"
+            )
+            cursor.execute(
+                "ALTER TABLE beat_features ADD COLUMN IF NOT EXISTS u_wave_peak INTEGER"
+            )
+            cursor.execute(
+                "ALTER TABLE beat_features ADD COLUMN IF NOT EXISTS u_wave_amplitude DOUBLE PRECISION"
+            )
+            cursor.execute(
+                "ALTER TABLE beat_features ADD COLUMN IF NOT EXISTS delta_wave_detected BOOLEAN"
+            )
+            cursor.execute(
+                "ALTER TABLE beat_features ADD COLUMN IF NOT EXISTS delta_wave_slope DOUBLE PRECISION"
+            )
+            cursor.execute(
+                "ALTER TABLE beat_features ADD COLUMN IF NOT EXISTS flutter_baseline_power DOUBLE PRECISION"
+            )
+            cursor.execute(
+                "ALTER TABLE beat_features ADD COLUMN IF NOT EXISTS flutter_baseline_dominant_hz DOUBLE PRECISION"
+            )
+            cursor.execute(
+                "ALTER TABLE beat_features ADD COLUMN IF NOT EXISTS flutter_baseline_detected BOOLEAN"
+            )
+            cursor.execute(
+                "ALTER TABLE beat_features ADD COLUMN IF NOT EXISTS flutter_organization_index DOUBLE PRECISION"
+            )
+            cursor.execute(
+                "ALTER TABLE beat_features ADD COLUMN IF NOT EXISTS qrs_axis_deg DOUBLE PRECISION"
+            )
+            cursor.execute(
+                "ALTER TABLE beat_features ADD COLUMN IF NOT EXISTS qtc_dispersion_ms DOUBLE PRECISION"
+            )
+            cursor.execute(
+                "ALTER TABLE beat_features ADD COLUMN IF NOT EXISTS electrical_alternans_detected BOOLEAN"
+            )
+            cursor.execute(
+                "ALTER TABLE beat_features ADD COLUMN IF NOT EXISTS epsilon_wave_detected BOOLEAN"
+            )
+            cursor.execute(
+                "ALTER TABLE beat_features ADD COLUMN IF NOT EXISTS spodick_sign_detected BOOLEAN"
+            )
+            cursor.execute(
+                "ALTER TABLE beat_features ADD COLUMN IF NOT EXISTS rhythm_classification TEXT"
+            )
+            cursor.execute(
+                "ALTER TABLE beat_features ADD COLUMN IF NOT EXISTS hrv_mean_nn DOUBLE PRECISION"
+            )
+            cursor.execute(
+                "ALTER TABLE beat_features ADD COLUMN IF NOT EXISTS hrv_sdnn DOUBLE PRECISION"
+            )
+            cursor.execute(
+                "ALTER TABLE beat_features ADD COLUMN IF NOT EXISTS hrv_rmssd DOUBLE PRECISION"
+            )
+            cursor.execute(
+                "ALTER TABLE beat_features ADD COLUMN IF NOT EXISTS context_samples DOUBLE PRECISION[]"
+            )
             
             # Index for fast retrieval of recent beats by session
             cursor.execute('''
@@ -117,18 +310,27 @@ class ECGDatabase:
                     session_id TEXT NOT NULL,
                     event_type TEXT NOT NULL,
                 
-                    event_start_time DOUBLE PRECISION NOT NULL,
-                    event_end_time DOUBLE PRECISION NOT NULL,
+                    event_start_time TIMESTAMP NOT NULL,
+                    event_end_time TIMESTAMP NOT NULL,
                 
                     severity TEXT DEFAULT 'unknown',
                 
                     is_active BOOLEAN DEFAULT TRUE,
                 
-                    last_update_time DOUBLE PRECISION,
-                
                     metadata_json JSONB
                 )
             ''')
+
+            # Migration for rhythm_events columns
+            cursor.execute("SELECT data_type FROM information_schema.columns WHERE table_name = 'rhythm_events' AND column_name = 'event_start_time'")
+            row = cursor.fetchone()
+            if row and 'double' in row[0].lower():
+                logger.info("Migrating rhythm_events start/end times to TIMESTAMP...")
+                cursor.execute("ALTER TABLE rhythm_events ALTER COLUMN event_start_time TYPE TIMESTAMP USING TO_TIMESTAMP(event_start_time)")
+                cursor.execute("ALTER TABLE rhythm_events ALTER COLUMN event_end_time TYPE TIMESTAMP USING TO_TIMESTAMP(event_end_time)")
+            
+            cursor.execute("ALTER TABLE rhythm_events DROP COLUMN IF EXISTS last_update_time")
+            cursor.execute("ALTER TABLE rhythm_events DROP COLUMN IF EXISTS last_update_time_time") # possible typo in previous versions? No, the user said last update.
             
             # Index for retrieving events by session
             cursor.execute('''
@@ -182,35 +384,63 @@ class ECGDatabase:
             ''')
 
             # =====================================================
-            # PATIENT MEMORY
+            # PDF SEMANTIC RAG CHUNKS
             # =====================================================
 
             cursor.execute('''
-            CREATE TABLE IF NOT EXISTS patient_memory (
+            CREATE TABLE IF NOT EXISTS pdf_knowledge_chunks (
 
                 id BIGSERIAL PRIMARY KEY,
 
-                patient_id TEXT NOT NULL,
+                document_name TEXT NOT NULL,
 
-                memory_type TEXT NOT NULL,
+                chunk_id TEXT UNIQUE NOT NULL,
 
-                memory_key TEXT NOT NULL,
+                page_start INTEGER,
 
-                memory_value JSONB,
+                page_end INTEGER,
 
-                confidence DOUBLE PRECISION,
+                chunk_index INTEGER,
 
-                source TEXT,
+                section_hint TEXT,
 
-                created_at TIMESTAMP DEFAULT NOW(),
+                content TEXT NOT NULL,
 
-                updated_at TIMESTAMP DEFAULT NOW()
+                metadata_json JSONB,
+
+                embedding VECTOR(384),
+
+                created_at TIMESTAMP DEFAULT NOW()
             )
             ''')
 
             cursor.execute('''
-            CREATE INDEX IF NOT EXISTS idx_patient_memory
-            ON patient_memory(patient_id)
+            CREATE INDEX IF NOT EXISTS idx_pdf_knowledge_document
+            ON pdf_knowledge_chunks(document_name)
+            ''')
+
+            cursor.execute('''
+            CREATE INDEX IF NOT EXISTS idx_pdf_knowledge_embedding
+            ON pdf_knowledge_chunks
+            USING ivfflat (embedding vector_cosine_ops)
+            WITH (lists = 100)
+            ''')
+
+            # =====================================================
+            # PATIENTS METADATA
+            # =====================================================
+
+            cursor.execute('''
+            CREATE TABLE IF NOT EXISTS patients (
+                patient_id TEXT PRIMARY KEY,
+                age INTEGER,
+                sex TEXT,
+                smoking_status TEXT,
+                comorbidities JSONB,
+                dynamic_symptoms JSONB DEFAULT '{}'::jsonb,
+                created_at TIMESTAMP DEFAULT NOW(),
+                updated_at TIMESTAMP DEFAULT NOW()
+            )
             ''')
 
             # =====================================================
@@ -239,7 +469,8 @@ class ECGDatabase:
             ''')
     def search_knowledge(self, embedding, top_k=8):
 
-        embedding_str = "[" + ",".join(map(str, embedding.tolist())) + "]"
+        embedding_list = embedding.tolist() if hasattr(embedding, "tolist") else list(embedding)
+        embedding_str = "[" + ",".join(map(str, embedding_list)) + "]"
 
         with self._get_connection() as conn:
 
@@ -268,6 +499,161 @@ class ECGDatabase:
             )
 
             return cursor.fetchall()
+
+    def count_pdf_knowledge_chunks(self, document_name: Optional[str] = None) -> int:
+        with self._get_connection() as conn:
+            cursor = conn.cursor()
+            if document_name:
+                cursor.execute(
+                    """
+                    SELECT COUNT(*)
+                    FROM pdf_knowledge_chunks
+                    WHERE document_name = %s
+                    """,
+                    (document_name,)
+                )
+            else:
+                cursor.execute("SELECT COUNT(*) FROM pdf_knowledge_chunks")
+            return int(cursor.fetchone()[0])
+
+    def insert_pdf_knowledge_chunks(
+        self,
+        chunks: List[Dict[str, Any]],
+        replace_document: bool = False
+    ) -> int:
+        if not chunks:
+            return 0
+
+        document_name = chunks[0].get("document_name")
+
+        with self._get_connection() as conn:
+            cursor = conn.cursor()
+
+            if replace_document and document_name:
+                cursor.execute(
+                    """
+                    DELETE FROM pdf_knowledge_chunks
+                    WHERE document_name = %s
+                    """,
+                    (document_name,)
+                )
+
+            inserted = 0
+            for chunk in chunks:
+                embedding = chunk.get("embedding")
+                embedding_str = (
+                    "[" + ",".join(map(str, embedding)) + "]"
+                    if embedding is not None
+                    else None
+                )
+                metadata_json = chunk.get("metadata_json") or {}
+                if isinstance(metadata_json, dict):
+                    metadata_json = json.dumps(metadata_json)
+
+                cursor.execute(
+                    """
+                    INSERT INTO pdf_knowledge_chunks (
+                        document_name,
+                        chunk_id,
+                        page_start,
+                        page_end,
+                        chunk_index,
+                        section_hint,
+                        content,
+                        metadata_json,
+                        embedding
+                    )
+                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s::jsonb, %s::vector)
+                    ON CONFLICT (chunk_id)
+                    DO UPDATE SET
+                        page_start = EXCLUDED.page_start,
+                        page_end = EXCLUDED.page_end,
+                        chunk_index = EXCLUDED.chunk_index,
+                        section_hint = EXCLUDED.section_hint,
+                        content = EXCLUDED.content,
+                        metadata_json = EXCLUDED.metadata_json,
+                        embedding = EXCLUDED.embedding
+                    """,
+                    (
+                        chunk.get("document_name"),
+                        chunk.get("chunk_id"),
+                        chunk.get("page_start"),
+                        chunk.get("page_end"),
+                        chunk.get("chunk_index"),
+                        chunk.get("section_hint"),
+                        chunk.get("content"),
+                        metadata_json,
+                        embedding_str,
+                    )
+                )
+                inserted += 1
+
+            cursor.execute("ANALYZE pdf_knowledge_chunks")
+            return inserted
+
+    def search_pdf_knowledge(
+        self,
+        embedding,
+        top_k: int = 3,
+        document_name: Optional[str] = None
+    ) -> List[Dict[str, Any]]:
+        embedding_list = embedding.tolist() if hasattr(embedding, "tolist") else list(embedding)
+        embedding_str = "[" + ",".join(map(str, embedding_list)) + "]"
+
+        with self._get_connection() as conn:
+            cursor = conn.cursor(cursor_factory=RealDictCursor)
+            cursor.execute("SET LOCAL ivfflat.probes = 100")
+
+            if document_name:
+                cursor.execute(
+                    """
+                    SELECT
+                        chunk_id,
+                        document_name,
+                        page_start,
+                        page_end,
+                        chunk_index,
+                        section_hint,
+                        content,
+                        metadata_json,
+                        1 - (embedding <=> %s::vector) AS similarity
+                    FROM pdf_knowledge_chunks
+                    WHERE document_name = %s
+                    ORDER BY embedding <=> %s::vector
+                    LIMIT %s
+                    """,
+                    (
+                        embedding_str,
+                        document_name,
+                        embedding_str,
+                        top_k
+                    )
+                )
+            else:
+                cursor.execute(
+                    """
+                    SELECT
+                        chunk_id,
+                        document_name,
+                        page_start,
+                        page_end,
+                        chunk_index,
+                        section_hint,
+                        content,
+                        metadata_json,
+                        1 - (embedding <=> %s::vector) AS similarity
+                    FROM pdf_knowledge_chunks
+                    ORDER BY embedding <=> %s::vector
+                    LIMIT %s
+                    """,
+                    (
+                        embedding_str,
+                        embedding_str,
+                        top_k
+                    )
+                )
+
+            return cursor.fetchall()
     def insert_beat(self, beat_data):
 
         raw_json = beat_data.get("raw_feature_json")
@@ -278,103 +664,59 @@ class ECGDatabase:
         with self._get_connection() as conn:
 
             cursor = conn.cursor()
+            columns = [
+                "session_id", "timestamp", "beat_index",
+                "predicted_label", "prediction_confidence",
+                "rr_interval", "heart_rate",
+                "qrs_width", "qrs_voltage", "q_amplitude", "r_amplitude", "s_amplitude",
+                "q_peak", "s_peak", "r_peak_idx", "qrs_onset", "qrs_offset",
+                "qt_interval", "qtc", "qtc_bazett", "qtc_fridericia",
+                "st_deviation", "st_segment_ms",
+                "t_wave_min", "t_wave_inverted", "t_wave_width_ms",
+                "t_wave_amplitude", "t_wave_polarity", "tpeak_tend_interval_ms",
+                "p_wave_detected", "p_wave_width_ms", "p_wave_prominence",
+                "p_wave_inverted", "p_wave_amplitude", "p_wave_polarity",
+                "pr_interval_ms", "pr_segment_ms",
+                "u_wave_detected", "u_wave_peak", "u_wave_amplitude",
+                "delta_wave_detected", "delta_wave_slope",
+                "flutter_baseline_power", "flutter_baseline_dominant_hz",
+                "flutter_baseline_detected", "flutter_organization_index",
+                "qrs_axis_deg", "qtc_dispersion_ms",
+                "electrical_alternans_detected", "epsilon_wave_detected",
+                "spodick_sign_detected", "rhythm_classification",
+                "hrv_mean_nn", "hrv_sdnn", "hrv_rmssd",
+                "r_wave_inverted",
+                "p_onset", "p_peak", "p_offset", "t_onset", "t_peak", "t_offset",
+                "feature_source",
+                "t_peak_position", "p_peak_position", "rt_interval_ms",
+                "amplitude_mean", "amplitude_std", "amplitude_min", "amplitude_max",
+                "peak_to_peak", "signal_quality_score", "is_abnormal",
+                "raw_feature_json",
+                "context_samples",
+            ]
 
-            cursor.execute(
-                """
-                INSERT INTO beat_features (
+            values = []
+            for column in columns:
+                if column == "raw_feature_json":
+                    values.append(raw_json)
+                elif column == "is_abnormal":
+                    values.append(beat_data.get(column, False))
+                else:
+                    values.append(beat_data.get(column))
 
-                    session_id,
-                    timestamp,
-                    beat_index,
-
-                    predicted_label,
-                    prediction_confidence,
-
-                    rr_interval,
-                    heart_rate,
-                    qrs_width,
-
-                    amplitude_mean,
-                    amplitude_std,
-                    amplitude_min,
-                    amplitude_max,
-
-                    peak_to_peak,
-
-                    signal_quality_score,
-
-                    is_abnormal,
-
-                    raw_feature_json,
-
-                    qt_interval,
-                    qtc,
-
-                    st_deviation,
-
-                    t_wave_peak,
-                    t_wave_min,
-                    t_wave_inverted
-
-                )
-
-                VALUES (
-
-                    %s,%s,%s,
-                    %s,%s,
-                    %s,%s,%s,
-                    %s,%s,%s,%s,
-                    %s,
-                    %s,
-                    %s,
-                    %s::jsonb,
-                    %s,%s,
-                    %s,
-                    %s,%s,%s
-
-                )
-
+            placeholders = [
+                "%s::jsonb" if column == "raw_feature_json" else "%s"
+                for column in columns
+            ]
+            query = f"""
+                INSERT INTO beat_features ({", ".join(columns)})
+                VALUES ({", ".join(placeholders)})
                 RETURNING id
-                """,
-                (
+            """
 
-                    beat_data["session_id"],
-                    beat_data["timestamp"],
-                    beat_data["beat_index"],
+            cursor.execute(query, values)
 
-                    beat_data.get("predicted_label"),
-                    beat_data.get("prediction_confidence"),
-
-                    beat_data.get("rr_interval"),
-                    beat_data.get("heart_rate"),
-                    beat_data.get("qrs_width"),
-
-                    beat_data.get("amplitude_mean"),
-                    beat_data.get("amplitude_std"),
-                    beat_data.get("amplitude_min"),
-                    beat_data.get("amplitude_max"),
-
-                    beat_data.get("peak_to_peak"),
-
-                    beat_data.get("signal_quality_score"),
-
-                    beat_data.get("is_abnormal", False),
-
-                    raw_json,
-
-                    beat_data.get("qt_interval"),
-                    beat_data.get("qtc"),
-
-                    beat_data.get("st_deviation"),
-
-                    beat_data.get("t_wave_peak"),
-                    beat_data.get("t_wave_min"),
-                    beat_data.get("t_wave_inverted")
-
-                )
-            )
-
-        return cursor.fetchone()[0]
+            return cursor.fetchone()[0]
     def get_recent_events(
         self,
         session_id,
@@ -411,6 +753,15 @@ class ECGDatabase:
         if isinstance(meta_json, dict):
             meta_json = json.dumps(meta_json)
 
+        # Convert float timestamps to datetime
+        start_time = event_data['event_start_time']
+        if isinstance(start_time, (int, float)):
+            start_time = datetime.fromtimestamp(start_time)
+            
+        end_time = event_data['event_end_time']
+        if isinstance(end_time, (int, float)):
+            end_time = datetime.fromtimestamp(end_time)
+
         with self._get_connection() as conn:
             cursor = conn.cursor()
             cursor.execute('''
@@ -422,28 +773,64 @@ class ECGDatabase:
             ''', (
                 event_data['session_id'],
                 event_data['event_type'],
-                event_data['event_start_time'],
-                event_data['event_end_time'],
+                start_time,
+                end_time,
                 event_data.get('severity', 'unknown'),
                 meta_json
             ))
             return cursor.fetchone()[0]
-    def get_patient_memory(
-        self,
-         patient_id
-     ):       
-        """
-        Retrieves all memory entries for a given patient.
-        """
+    def register_patient(self, patient_id: str, age: int, sex: str, smoking_status: str, comorbidities: list):
+        """Registers a new patient with fixed metadata."""
+        with self._get_connection() as conn:
+            cursor = conn.cursor()
+            cursor.execute('''
+                INSERT INTO patients (patient_id, age, sex, smoking_status, comorbidities, dynamic_symptoms)
+                VALUES (%s, %s, %s, %s, %s::jsonb, '{}'::jsonb)
+                ON CONFLICT (patient_id) DO UPDATE SET
+                    age = EXCLUDED.age,
+                    sex = EXCLUDED.sex,
+                    smoking_status = EXCLUDED.smoking_status,
+                    comorbidities = EXCLUDED.comorbidities,
+                    updated_at = NOW()
+            ''', (patient_id, age, sex, smoking_status, json.dumps(comorbidities)))
+
+    def update_dynamic_symptom(self, patient_id: str, symptom_key: str, answer: str):
+        """Updates or adds a dynamic symptom answer to the patient's record."""
+        with self._get_connection() as conn:
+            cursor = conn.cursor()
+            cursor.execute('''
+                UPDATE patients 
+                SET dynamic_symptoms = jsonb_set(
+                        dynamic_symptoms, 
+                        array[%s], 
+                        %s::jsonb, 
+                        true
+                    ),
+                    updated_at = NOW()
+                WHERE patient_id = %s
+            ''', (symptom_key, json.dumps(answer), patient_id))
+
+    def get_patient_metadata(self, patient_id: str) -> dict:
+        """Retrieves unified patient metadata (fixed + dynamic)."""
         with self._get_connection() as conn:
             cursor = conn.cursor(cursor_factory=RealDictCursor)
             cursor.execute('''
-                SELECT memory_type, memory_key, memory_value, confidence, source
-                FROM patient_memory
+                SELECT age, sex, smoking_status, comorbidities, dynamic_symptoms
+                FROM patients
                 WHERE patient_id = %s
-                ORDER BY updated_at DESC
             ''', (patient_id,))
-            return cursor.fetchall()
+            row = cursor.fetchone()
+            if not row:
+                return {}
+            
+            # Combine into a single dictionary format expected by the pipeline
+            return {
+                "age": row["age"],
+                "sex": row["sex"],
+                "smoking_status": row["smoking_status"],
+                "comorbidities": row["comorbidities"] or [],
+                "dynamic_symptoms": row["dynamic_symptoms"] or {}
+            }
     def insert_agent_interaction(
         self,
         patient_id,
@@ -559,6 +946,9 @@ class ECGDatabase:
         metadata_json=None,
         severity=None
     ):
+        # Convert float timestamp to datetime
+        if isinstance(new_end_time, (int, float)):
+            new_end_time = datetime.fromtimestamp(new_end_time)
 
         with self._get_connection() as conn:
 
@@ -572,24 +962,43 @@ class ECGDatabase:
                 UPDATE rhythm_events
                 SET
                     event_end_time = %s,
-                    last_update_time = %s,
                     metadata_json = COALESCE(%s::jsonb, metadata_json),
                     severity = COALESCE(%s, severity)
                 WHERE id = %s
                 ''',
                 (
                     new_end_time,
-                    new_end_time,
                     metadata_json,
                     severity,
                     event_id
                 )
             )
+    def close_all_active_events(self) -> int:
+        """
+        Close all active rhythm events across all sessions.
+        This is called at pipeline init to prevent stale events from
+        blocking new event creation via process_event_with_cooldown().
+        Returns the number of events closed.
+        """
+        with self._get_connection() as conn:
+            cursor = conn.cursor()
+            cursor.execute(
+                """
+                UPDATE rhythm_events
+                SET is_active = FALSE
+                WHERE is_active = TRUE
+                """
+            )
+            return cursor.rowcount
+
     def close_event(
         self,
         event_id: int,
         close_time: float
     ):
+        # Convert float timestamp to datetime
+        if isinstance(close_time, (int, float)):
+            close_time = datetime.fromtimestamp(close_time)
 
         with self._get_connection() as conn:
 
@@ -600,16 +1009,108 @@ class ECGDatabase:
                 UPDATE rhythm_events
                 SET
                     is_active = FALSE,
-                    event_end_time = %s,
-                    last_update_time = %s
+                    event_end_time = %s
                 WHERE id = %s
                 ''',
                 (
                     close_time,
-                    close_time,
                     event_id
                 )
             )
+    def count_pvcs_last_24h(self, session_id: str) -> int:
+        """
+        Count PVC beats in the past 24 hours for a given session.
+        PVC label is 2 (LABEL_V) in the AAMI standard mapping.
+        """
+        with self._get_connection() as conn:
+            cursor = conn.cursor()
+            cursor.execute('''
+                SELECT COUNT(*) FROM beat_features
+                WHERE session_id = %s
+                  AND predicted_label = 2
+                  AND timestamp >= EXTRACT(EPOCH FROM NOW() - INTERVAL '24 hours')
+            ''', (session_id,))
+            return int(cursor.fetchone()[0])
+
+    def count_pvcs_lbbb_last_24h(self, session_id: str) -> int:
+        """
+        Count PVC beats with LBBB morphology in the past 24 hours.
+        LBBB morphology is inferred from qrs_width >= 120 ms and qrs_axis_deg <= -30.
+        """
+        with self._get_connection() as conn:
+            cursor = conn.cursor()
+            cursor.execute('''
+                SELECT COUNT(*) FROM beat_features
+                WHERE session_id = %s
+                  AND predicted_label = 2
+                  AND qrs_width >= 120
+                  AND (qrs_axis_deg IS NULL OR qrs_axis_deg <= -30)
+                  AND timestamp >= EXTRACT(EPOCH FROM NOW() - INTERVAL '24 hours')
+            ''', (session_id,))
+            return int(cursor.fetchone()[0])
+
+    def count_vt_episodes_last_24h(self, session_id: str) -> int:
+        """
+        Count VT_RUN events in the past 24 hours from rhythm_events.
+        """
+        with self._get_connection() as conn:
+            cursor = conn.cursor()
+            cursor.execute('''
+                SELECT COUNT(*) FROM rhythm_events
+                WHERE session_id = %s
+                  AND event_type = 'VT_RUN'
+                  AND event_start_time >= NOW() - INTERVAL '24 hours'
+            ''', (session_id,))
+            return int(cursor.fetchone()[0])
+
+    def count_prior_arvc_epsilon_windows(self, session_id: str) -> int:
+        """
+        Count prior monitoring windows where epsilon wave was detected.
+        Uses rhythm_events with DISEASE_ARVC type as a proxy.
+        """
+        with self._get_connection() as conn:
+            cursor = conn.cursor()
+            cursor.execute('''
+                SELECT COUNT(*) FROM rhythm_events
+                WHERE session_id = %s
+                  AND event_type = 'DISEASE_ARVC'
+            ''', (session_id,))
+            return int(cursor.fetchone()[0])
+
+    def count_prior_arvc_t_inversion_windows(self, session_id: str) -> int:
+        """
+        Count prior monitoring windows where persistent T-wave inversion
+        was detected in the context of ARVC screening.
+        Uses rhythm_events with DISEASE_ARVC type and T-inversion metadata.
+        """
+        with self._get_connection() as conn:
+            cursor = conn.cursor()
+            cursor.execute('''
+                SELECT COUNT(*) FROM rhythm_events
+                WHERE session_id = %s
+                  AND event_type = 'DISEASE_ARVC'
+                  AND metadata_json->>'t_inversion_fraction' IS NOT NULL
+                  AND (metadata_json->>'t_inversion_fraction')::float >= 0.70
+            ''', (session_id,))
+            return int(cursor.fetchone()[0])
+
+    def get_max_arvc_ecg_tfc_score(self, session_id: str) -> int:
+        """
+        Get the highest ECG-partial TFC score ever recorded for this session.
+        Queries metadata_json from DISEASE_ARVC events for the tfc_score field.
+        """
+        with self._get_connection() as conn:
+            cursor = conn.cursor()
+            cursor.execute('''
+                SELECT COALESCE(MAX(
+                    (metadata_json->>'tfc_score')::int
+                ), 0) FROM rhythm_events
+                WHERE session_id = %s
+                  AND event_type = 'DISEASE_ARVC'
+                  AND metadata_json->>'tfc_score' IS NOT NULL
+            ''', (session_id,))
+            return int(cursor.fetchone()[0])
+
     def get_condition_sections(
        self,
        condition_id,
