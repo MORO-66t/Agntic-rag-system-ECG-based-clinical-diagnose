@@ -1,2 +1,277 @@
-# Graduation project
+# ECG Clinical Intelligence Pipeline
+
+Real-time / offline ECG monitoring and clinical diagnosis system that combines:
+
+| Branch | What it does |
+|---|---|
+| **CNN branch** | Beat-level classification into 5 AAMI classes (**N / S / V / F / Q**) by a trained convolutional network (`ecg_cnn_model.keras`) |
+| **Clinical branch** | NeuroKit2 morphology extraction — PR / QRS / QT / ST intervals, P / T amplitudes entering features (`neurokit_feature_extractor.py`) |
+| **Temporal analysis** | Sliding-window rhythm detection — bigeminy, trigeminy, couplets, pauses, AV block, VT / VF, rates |
+| **Disease detection** | Rule-based clinical detectors for 15+ conditions using AHA / ESC thresholds (`disease_detection/`) |
+| **RAG agent** | Semantic retrieval over a clinical PDF knowledge base (`Cardiac_Diagnostics_Comprehensive_KB.pdf`) + LLM-generated assessment (Groq API) |
+
+---
+
+## Table of Contents
+
+1. [Requirements](#1-requirements)
+2. [Installation](#2-installation)
+3. [Environment variables](#3-environment-variables)
+4. [MIT-BIH data setup](#4-mit-bih-data-setup)
+5. [Run the system](#5-run-the-system)
+6. [RAG knowledge base (PDF)](#6-rag-knowledge-base-pdf)
+7. [Kafka streaming (optional)](#7-kafka-streaming-optional)
+8. [Offline dataset export](#8-offline-dataset-export)
+9. [Tests](#9-tests)
+10. [Notebooks](#10-notebooks)
+11. [Project structure](#11-project-structure)
+
+---
+
+## 1. Requirements
+
+- Python **3.10+** (developed on 3.13)
+- PostgreSQL **14+** with the [pgvector](https://github.com/pgvector/pgvector) extension
+- Optional: Apache Kafka broker on `localhost:9092`
+- A local copy of the **MIT-BIH arrhythmia database** (see [§4](#4-mit-bih-data-setup))
+
+---
+
+## 2. Installation
+
+```bash
+git clone https://github.com/MORO-66t/Agntic-rrag-system-ECG-based-clinical-diagnose.git
+cd <repo-directory>
+
+python -m venv .venv
+
+# Windows
+.venv\Scripts\activate
+# Linux / macOS
+source .venv/bin/activate
+
+pip install -r requirements.txt
+```
+
+**Database (PostgreSQL):** the schema — including the `vector` embedding column — is created
+automatically on the first run. One-time setup:
+
+```bash
+createdb ecg_agent_data
+psql -d ecg_agent_data -c "CREATE EXTENSION IF NOT EXISTS vector;"
+```
+
+Adjust host / port / name / user / password in `.env` if needed.
+
+**Secrets:** copy the template and fill in your real credentials. **Never commit `.env`**
+(it is gitignored):
+
+```bash
+# Linux / macOS
+cp .env.example .env
+# Windows
+copy .env.example .env
+```
+
+---
+
+## 3. Environment variables
+
+All configuration is read from `.env` by `config.py`. Full list is in `.env.example`:
+
+| Variable | Purpose |
+|---|---|
+| `GROQ_API_KEY` | Single Groq API key |
+| `GROQ_API_KEYS` | Comma-separated Groq keys (rotation; overrides `GROQ_API_KEY`) |
+| `GROQ_MODEL` | Groq chat model, e.g. `openai/gpt-oss-20b` |
+| `LLM_MODE` | `groq` (default) \| `test` \| `fake` |
+| `LOCAL_LLM_MODEL_PATH` | Folder of a local model for `test` mode |
+| `HF_TOKEN` / `HF_TOKENS` | Optional HuggingFace tokens (used by `token_manager.py`) |
+| `DB_HOST` `DB_PORT` `DB_NAME` `DB_USER` `DB_PASSWORD` | PostgreSQL connection |
+| `PDF_DOCUMENT_NAME` `PDF_DEFAULT_PATH` | Clinical knowledge PDF |
+| `KAFKA_BOOTSTRAP_SERVERS` and `KAFKA_*_TOPIC` | Optional Kafka brokers / topics |
+
+---
+
+## 4. MIT-BIH data setup
+
+The pipeline loads WFDB records directly from local disk (no pre-generated CSV needed).
+Place the PhysioNet MIT-BIH arrhythmia database and the optional P/T landmark `.mat`
+files under `tr0ph1c/` (this folder is gitignored — set it up locally):
+
+```text
+tr0ph1c/mit-bih-arrhythmia-dataset-lead-ii/versions/2/
+├── mit-bih-arrhythmia-database-1.0.0/                          # .dat/.hea/.atr records
+└── Pwaves_Twaves_Annotation/Pwaves_Twaves_Annotation/          # optional Ant_mitdb_XXX.mat
+```
+
+Missing `.mat` landmarks only disable P/T annotation validation — the pipeline still runs.
+
+---
+
+## 5. Run the system
+
+The main entry point is `realtime_stream.py`: it simulates a real-time bedside monitor by
+feeding each beat of a record into the dual-branch pipeline (CNN + NeuroKit2 + temporal
+analysis + disease detection + RAG agent).
+
+### Quick start
+
+```bash
+# Fast simulation of record 100 (agent ON, no inter-beat delay)
+python realtime_stream.py --record 100 --fast
+
+# Multiple records in one run
+python realtime_stream.py --record 100 --record 208 --fast
+
+# True real-time pacing (sleeps by each beat's RR interval)
+python realtime_stream.py --record 100
+
+# Process a subset and write a JSON diagnostics report
+python realtime_stream.py --record 208 --start-beat 0 --end-beat 2000 --report out.json --fast
+
+# Dry run — sanity-check the data source only, no pipeline calls
+python realtime_stream.py --record 100 --dry-run --fast
+```
+
+### All CLI flags (`realtime_stream.py`)
+
+| Flag | Description |
+|---|---|
+| `--record <NAME>` | MIT-BIH record name (e.g. `100`, `208`). Repeatable to stream multiple records |
+| `--max-beats N` | Stop after N beats |
+| `--start-beat N` / `--end-beat N` | 0-based beat index range (end inclusive) |
+| `--start-time S` / `--end-time S` | Window over the record clock (seconds) |
+| `--fast` | No inter-beat delay (default behaviour) |
+| `--realtime` | Sleep by each beat's RR interval |
+| `--dry-run` | Skip pipeline calls; only trace the data source |
+| `--session-id STR` | Session id stored in PostgreSQL |
+| `--model-path FILE` | Path to the CNN weights (default `ecg_cnn_model.keras`) |
+| `--agent-llm-mode {groq,test}` | RAG agent LLM backend (`groq` default, `test` = local model) |
+| `--local-model-path DIR` | Local model directory (with `--agent-llm-mode test`) |
+| `--no-agent` | Disable the RAG agent entirely |
+| `--report PATH` | Write a JSON diagnostics report |
+| `--quiet-events` | Suppress per-event diagnostic logging |
+| `--turbo` | Fast-test mode (no agent, minimal thresholds) |
+| `--debug-afib` | Print the AFib diagnostic dashboard for every analyzed window |
+| `--debug-afl` | Print the Atrial Flutter diagnostic dashboard for every analyzed window |
+| `--debug-morphology` | Show exactly how each ECG feature was computed (per beat) |
+| `--log-file PATH` | Write all log output to a file in addition to the terminal |
+
+> **Note:** `--agent-llm-mode inference` was removed — the HuggingFace inference backend is
+> gone. Use `groq` (requires `GROQ_API_KEYS`) or `test` (requires a local model).
+
+---
+
+## 6. RAG knowledge base (PDF)
+
+Embedding uses the local `sentence-transformers/all-MiniLM-L6-v2` model (first run
+downloads it from the HuggingFace Hub). Query generation via `--analyze-event` uses Groq,
+so `GROQ_API_KEYS` must be configured in `.env`.
+
+```bash
+# Extract, embed, and store the PDF chunks in PostgreSQL
+python pdf_semantic_rag.py --ingest
+
+# Shortcut for the default PDF
+python ingest_pdf_knowledge.py
+
+# Semantic search over the knowledge base
+python pdf_semantic_rag.py --search "long QT criteria"
+
+# Full RAG agent analysis for an event type (LLM generation)
+python pdf_semantic_rag.py --analyze-event "Atrial Fibrillation (AF)" \
+    --session-id demo --top-k 5
+
+# Custom PDF / document name
+python pdf_semantic_rag.py --ingest --pdf docs/clinical_kb.pdf --document-name "My KB"
+```
+
+---
+
+## 7. Kafka streaming (optional)
+
+Requires a running Kafka broker (default `localhost:9092`); `kafka-python` is included in
+`requirements.txt`. Relevant modules: `kafka_mitbih_producer.py`, `kafka_raw_consumer.py`,
+`kafka_producer.py`, `ecg_kafka_service.py`.
+
+```bash
+# Start a local broker (example)
+bin/kafka-server-start.sh config/server.properties
+
+# Raw-signal producer smoke test
+python test_mitbih_producer.py
+
+# End-to-end Kafka pipeline test (starts the service, streams a record, verifies events)
+python test_kafka_full_pipeline.py
+python test_kafka_full_pipeline.py --record 202 --max-beats 10
+python test_kafka_full_pipeline.py --no-service   # pretend an instance is already running
+```
+
+Topics (configurable via `KAFKA_*` in `.env`):
+
+| Topic | Stream |
+|---|---|
+| `ecg.raw.signal` | Stream 1 — raw ECG signal chunks |
+| `ecg.events.temporal` | Stream 2 — rhythm / pattern events |
+| `ecg.results.clinical` | Stream 3 — clinical results + agent assessments |
+| `ecg.patient.registration` | Stream 4 — patient metadata |
+
+---
+
+## 8. Offline dataset export
+
+Build a flat CSV of beats + features for training / evaluation (a separate use case from
+the live pipeline):
+
+```bash
+python convert_wfdb_to_csv_W.py     # writes ./mitbih_beats1_with_pt.csv
+```
+
+---
+
+## 9. Tests
+
+```bash
+python test_mitbih_producer.py       # producer chunk smoke test
+python test_kafka_full_pipeline.py   # Kafka end-to-end (requires a broker)
+```
+
+---
+
+## 10. Notebooks
+
+| Notebook | Purpose |
+|---|---|
+| `models-training.ipynb` | Trains the CNN classifier → save as `ecg_cnn_model.keras` |
+| `ecg-project1.ipynb` | Original experiment / EDA |
+| `mit_bih_neurokit2_analysis.ipynb` | NeuroKit2 morphology exploration |
+| `mit_bih_neurokit2_analysis_executed.ipynb` | Same, with cell outputs |
+| `neurokit_morphology_visualization.ipynb` | Morphology feature visualization |
+
+---
+
+## 11. Project structure
+
+```text
+realtime_stream.py             entry point — simulated real-time monitor
+ecg_pipeline.py                dual-branch orchestrator (CNN + clinical)
+convert_wfdb_to_csv_W.py       beat segmentation + CNN preprocessing
+neurokit_feature_extractor.py  NeuroKit2 morphology extraction
+feature_engineering.py         feature assembly
+clinical_report_formatter.py   clinical report formatting
+temporal_analysis.py           rhythm / episode analysis
+disease_detection/             rule-based disease detectors
+disease_detector.py            detector orchestrator
+Event_Manager.py               event rules / escalation
+episode_manager.py             episode lifecycle
+pdf_semantic_rag.py            RAG ingestion / retrieval / agent
+llm_client.py                  LLM client factory (Groq / local / fake)
+database.py                    PostgreSQL + pgvector persistence
+kafka_*.py, ecg_kafka_service.py   optional Kafka streaming
+token_manager.py               HuggingFace token rotation utility
+```
+
+> **Note:** the dataset folder (`tr0ph1c/`), runtime logs, and generated artifacts are
+> all gitignored — check `.gitignore` and set the data up locally ([§4](#4-mit-bih-data-setup)).
 
