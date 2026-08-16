@@ -2550,11 +2550,11 @@ def _build_afl_window_features(
                     if mean_band_power > 0 and len(band_power) > 0
                     else 0.0
                 )
-        if window_dominant_hz is not None:
-            print(f"[AFL context] {len(ctx_arr)} samples, "
-                  f"dominant_hz={window_dominant_hz:.3f}, "
-                  f"flutter_ratio={window_flutter_ratio:.4f}, "
-                  f"detected={window_flutter_baseline_detected}")
+        # if window_dominant_hz is not None:
+        #     print(f"[AFL context] {len(ctx_arr)} samples, "
+        #           f"dominant_hz={window_dominant_hz:.3f}, "
+        #           f"flutter_ratio={window_flutter_ratio:.4f}, "
+        #           f"detected={window_flutter_baseline_detected}")
     else:
         # Only print when debug_afl would have been useful but context is missing
         pass
